@@ -36,7 +36,8 @@ src/
 └── devices.py            # Device management (CPU/GPU)
 tests/
 └── test_pipeline.py       # End-to-end pipeline test
-app.py                       # Gradio web UI
+api.py                       # FastAPI backend
+frontend/                    # Vite + Vanilla JS frontend application
 ```
 
 ## What Changed vs. the Original Notebook
@@ -54,15 +55,25 @@ This project started as a Google Colab notebook and was fully de-Colab'd for pro
 
 ### Local Development
 
+#### Backend (FastAPI)
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 export GROQ_API_KEY=your_key
-python -m pytest tests/ -v
-python app.py
+python api.py
 ```
+*API runs on **http://localhost:8000***
 
-Open **http://localhost:7860**.
+#### Frontend (Vite)
+Open a second terminal window:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Frontend runs on the local Vite port (usually **http://localhost:5173**)*
+
+Open **http://localhost:5173**.
 
 > **Windows users:** activate the venv with `.venv\Scripts\activate` instead, and set the key with `$env:GROQ_API_KEY="your_key"` (PowerShell) or via a `.env` file (see below).
 

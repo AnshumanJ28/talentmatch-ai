@@ -1,4 +1,6 @@
-gradio
+fastapi
+uvicorn
+python-multipart
 torch
 pymupdf>=1.24.10
 easyocr>=1.7.2
