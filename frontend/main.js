@@ -124,13 +124,35 @@ function showResults(data) {
   // Count up animation for number
   animateValue(scoreValue, 0, percentage, 1500);
 
-  // Parse Narrative Summary
-  const narrativeSummary = document.getElementById('narrativeSummary');
-  if (data.explanation && data.explanation.narrative_summary) {
-    narrativeSummary.textContent = data.explanation.narrative_summary;
-    narrativeSummary.style.display = 'block';
+  // Parse Analysis Grid (Strengths & Improvements)
+  const analysisGrid = document.getElementById('analysisGrid');
+  const strengthsList = document.getElementById('strengthsList');
+  const improvementsList = document.getElementById('improvementsList');
+  
+  if (data.explanation && data.explanation.feature_values) {
+    const fv = data.explanation.feature_values;
+    const strengths = [];
+    const improvements = [];
+    
+    if (fv.has_experience === 1) strengths.push(`Includes Work Experience (${fv.total_experience_months || 0} months)`);
+    else improvements.push('Missing Work Experience section');
+
+    if (fv.has_projects === 1) strengths.push(`Includes Projects (${fv.num_projects || 0} listed)`);
+    else improvements.push('Missing Projects section');
+
+    if (fv.num_degrees > 0) strengths.push(`Includes Education (${fv.num_degrees} degree${fv.num_degrees > 1 ? 's' : ''})`);
+    else improvements.push('Missing Education details');
+
+    if (fv.has_gpa === 1) strengths.push(`GPA is included on the resume`);
+    
+    if (fv.has_certifications === 1) strengths.push(`Includes Certifications (${fv.num_certifications || 0} listed)`);
+    else improvements.push('Consider adding relevant Certifications');
+    
+    strengthsList.innerHTML = strengths.map(s => `<li><span class="check-icon">✓</span> ${s}</li>`).join('');
+    improvementsList.innerHTML = improvements.map(s => `<li><span class="x-icon">✗</span> ${s}</li>`).join('');
+    analysisGrid.style.display = 'grid';
   } else {
-    narrativeSummary.style.display = 'none';
+    analysisGrid.style.display = 'none';
   }
 
   // Parse Skills
@@ -138,13 +160,26 @@ function showResults(data) {
   const matchedSkillsDiv = document.getElementById('matchedSkills');
   const missingSkillsDiv = document.getElementById('missingSkills');
   
+  const formatSkill = (skill) => {
+      if (!skill) return "";
+      const known = {
+          'c': 'C', 'r': 'R', 'cpp': 'C++', 'c++': 'C++', 'c#': 'C#',
+          'javascript': 'JavaScript', 'typescript': 'TypeScript', 'html': 'HTML',
+          'css': 'CSS', 'php': 'PHP', 'sql': 'SQL', 'mysql': 'MySQL',
+          'postgresql': 'PostgreSQL', 'aws': 'AWS', 'gcp': 'GCP',
+          'api': 'API', 'ui': 'UI', 'ux': 'UX', 'react': 'React', 'node': 'Node.js'
+      };
+      if (known[skill.toLowerCase()]) return known[skill.toLowerCase()];
+      return skill.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  };
+
   if (data.explanation && data.explanation.skill_gap) {
     skillsContainer.style.display = 'block';
     const matched = data.explanation.skill_gap.matched_skills || [];
     const missing = data.explanation.skill_gap.missing_skills || [];
     
-    matchedSkillsDiv.innerHTML = matched.map(s => `<span class="skill-tag matched">${s}</span>`).join('') || '<span class="skill-tag empty">None found</span>';
-    missingSkillsDiv.innerHTML = missing.map(s => `<span class="skill-tag missing">${s}</span>`).join('') || '<span class="skill-tag empty">None missing</span>';
+    matchedSkillsDiv.innerHTML = matched.map(s => `<span class="skill-tag matched">${formatSkill(s)}</span>`).join('') || '<span class="skill-tag empty">None found</span>';
+    missingSkillsDiv.innerHTML = missing.map(s => `<span class="skill-tag missing">${formatSkill(s)}</span>`).join('') || '<span class="skill-tag empty">None missing</span>';
   } else {
     skillsContainer.style.display = 'none';
   }
