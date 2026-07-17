@@ -54,15 +54,35 @@ dropArea.addEventListener('drop', (e) => {
   }
 });
 
+// Character Counter for JD
+const jobDescriptionInput = document.getElementById('jobDescription');
+const charCountDisplay = document.getElementById('charCount');
+
+jobDescriptionInput.addEventListener('input', (e) => {
+  const currentLength = e.target.value.length;
+  charCountDisplay.textContent = `${currentLength} / 1500`;
+});
+
 // Form submission
 scoreForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   
   const file = resumeUpload.files[0];
-  const jdText = document.getElementById('jobDescription').value;
+  const jdText = jobDescriptionInput.value;
 
   if (!file || !jdText) {
     showToast("Please provide both a PDF and a Job Description.");
+    return;
+  }
+
+  // File size validation (limit to 2MB to save memory)
+  if (file.size > 2 * 1024 * 1024) {
+    showToast("File is too large! Please upload a PDF under 2MB.");
+    return;
+  }
+
+  if (jdText.length > 1500) {
+    showToast("Job Description is too long. Max 1500 characters.");
     return;
   }
 
