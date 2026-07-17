@@ -63,6 +63,17 @@ jobDescriptionInput.addEventListener('input', (e) => {
   charCountDisplay.textContent = `${currentLength} / 1500`;
 });
 
+const loadingTexts = [
+  "Reading resume structure...",
+  "Extracting skills and experience...",
+  "Analyzing job description...",
+  "Calculating semantic similarity...",
+  "Evaluating ATS criteria...",
+  "Finalizing match score..."
+];
+let loadingInterval;
+let textIndex = 0;
+
 // Form submission
 scoreForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -88,8 +99,14 @@ scoreForm.addEventListener('submit', async (e) => {
 
   // Set loading state
   submitBtn.disabled = true;
-  btnText.textContent = "Analyzing...";
   btnLoader.style.display = "block";
+  textIndex = 0;
+  btnText.textContent = loadingTexts[textIndex];
+  
+  loadingInterval = setInterval(() => {
+    textIndex = (textIndex + 1) % loadingTexts.length;
+    btnText.textContent = loadingTexts[textIndex];
+  }, 2500);
 
   const formData = new FormData();
   formData.append('pdf_file', file);
@@ -112,6 +129,7 @@ scoreForm.addEventListener('submit', async (e) => {
     showToast(error.message);
   } finally {
     // Reset loading state
+    clearInterval(loadingInterval);
     submitBtn.disabled = false;
     btnText.textContent = "Analyze Match";
     btnLoader.style.display = "none";
@@ -161,6 +179,34 @@ function showResults(data) {
   // Count up animation for number
   animateValue(scoreValue, 0, percentage, 1500);
   animateValue(semanticValue, 0, semanticPercentage, 1500);
+
+  // Populate Candidate Highlights
+  const parsed = data.parsed_resume;
+  if (parsed) {
+    document.getElementById('candidateProfile').style.display = 'block';
+    const name = (parsed.contact && parsed.contact.full_name) ? parsed.contact.full_name : "Unknown Candidate";
+    document.getElementById('candidateName').textContent = name;
+    document.getElementById('candidateEmail').textContent = (parsed.contact && parsed.contact.email) ? parsed.contact.email : "No email provided";
+    
+    // Initials
+    const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || "?";
+    document.getElementById('candidateInitials').textContent = initials;
+    
+    // Summary
+    document.getElementById('candidateSummary').textContent = parsed.summary || "No professional summary provided.";
+    
+    // Perks
+    const expCount = parsed.experience ? parsed.experience.length : 0;
+    document.getElementById('perkExperience').textContent = `${expCount} role${expCount === 1 ? '' : 's'}`;
+    
+    const eduCount = parsed.education ? parsed.education.length : 0;
+    document.getElementById('perkEducation').textContent = `${eduCount} degree${eduCount === 1 ? '' : 's'}`;
+    
+    const projCount = parsed.projects ? parsed.projects.length : 0;
+    document.getElementById('perkProjects').textContent = `${projCount} project${projCount === 1 ? '' : 's'}`;
+  } else {
+    document.getElementById('candidateProfile').style.display = 'none';
+  }
 
   // Parse Analysis Grid (Strengths & Improvements)
   const analysisGrid = document.getElementById('analysisGrid');
