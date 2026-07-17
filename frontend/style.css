@@ -787,3 +787,31 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+
+.dev-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.dev-table th, .dev-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--card-border);
+  text-align: left;
+}
+
+.dev-table th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-color);
+  font-family: 'Outfit', sans-serif;
+}
+
+.dev-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.dev-table tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}

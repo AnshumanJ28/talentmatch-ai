@@ -268,9 +268,47 @@ function showResults(data) {
     skillsContainer.style.display = 'none';
   }
 
-  // Format full JSON for developer details
+  // Format Developer Details as a Table
   const explanationContent = document.getElementById('explanationContent');
-  explanationContent.textContent = JSON.stringify(data.explanation || data, null, 2);
+  if (data.explanation && data.explanation.feature_values) {
+    let tableHTML = `<table class="dev-table">
+      <thead>
+        <tr>
+          <th>Feature Name</th>
+          <th>Raw Value</th>
+          <th>ATS Contribution Score</th>
+        </tr>
+      </thead>
+      <tbody>`;
+    
+    // Add retrieval similarity first
+    if (data.explanation.feature_contributions && data.explanation.feature_contributions.retrieval_similarity !== undefined) {
+       tableHTML += `
+        <tr>
+          <td>retrieval_similarity</td>
+          <td>-</td>
+          <td>+${data.explanation.feature_contributions.retrieval_similarity.toFixed(4)}</td>
+        </tr>`;
+    }
+
+    for (const [key, value] of Object.entries(data.explanation.feature_values)) {
+      const contribution = (data.explanation.feature_contributions && data.explanation.feature_contributions[key]) || 0;
+      const formattedValue = typeof value === 'number' ? parseFloat(value.toFixed(4)) : value;
+      const formattedContrib = typeof contribution === 'number' ? (contribution >= 0 ? '+' : '') + contribution.toFixed(4) : contribution;
+      
+      tableHTML += `
+        <tr>
+          <td>${key}</td>
+          <td>${formattedValue}</td>
+          <td>${formattedContrib}</td>
+        </tr>`;
+    }
+    
+    tableHTML += `</tbody></table>`;
+    explanationContent.innerHTML = tableHTML;
+  } else {
+    explanationContent.textContent = "No detailed breakdown available.";
+  }
 }
 
 // Reset UI
