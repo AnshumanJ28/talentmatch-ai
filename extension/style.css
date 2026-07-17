@@ -1,0 +1,179 @@
+:root {
+  --bg-color: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-color: #3b82f6;
+  --accent-hover: #2563eb;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  width: 350px;
+}
+
+.app-container {
+  padding: 1.5rem;
+}
+
+.app-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.accent-text {
+  color: var(--accent-color);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+input[type="file"] {
+  width: 100%;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.2);
+  border: 1px dashed var(--card-border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.btn-small {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-small:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.btn-primary, .btn-secondary {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-color), #2563eb);
+  color: white;
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  margin-top: 1rem;
+}
+
+.score-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.score-circle {
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+.circular-chart {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 100px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 2.5;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1.5s ease-out, stroke 0.5s;
+}
+
+.percentage {
+  fill: white;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.5rem;
+  text-anchor: middle;
+  font-weight: bold;
+}
+
+.score-label {
+  margin-top: 0.5rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.toast {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  padding: 0.75rem;
+  background: var(--danger-color);
+  color: white;
+  border-radius: 8px;
+  text-align: center;
+  transform: translateY(150%);
+  transition: transform 0.3s;
+  z-index: 100;
+  font-size: 0.9rem;
+}
+
+.toast.show {
+  transform: translateY(0);
+}
