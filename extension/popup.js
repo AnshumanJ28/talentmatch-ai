@@ -146,7 +146,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // This runs IN THE CONTEXT OF THE WEBPAGE
   function extractTextFromPage() {
-    // Try to find common JD containers (LinkedIn, Indeed, etc)
+    // 1. Google Docs specific extraction
+    if (window.location.hostname.includes('docs.google.com')) {
+      const paragraphs = document.querySelectorAll('.kix-paragraphrenderer');
+      if (paragraphs.length > 0) {
+        let docsText = '';
+        paragraphs.forEach(p => {
+          docsText += p.innerText + '\\n';
+        });
+        return docsText.trim();
+      }
+    }
+
+    // 2. Try to find common JD containers (LinkedIn, Indeed, etc)
     const selectors = [
       '#job-details', // LinkedIn
       '.job-description', 
@@ -159,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (el) return el.innerText;
     }
     
-    // Fallback: Just grab the body text
+    // 3. Fallback: Just grab the body text
     return document.body.innerText;
   }
 });
