@@ -48,6 +48,7 @@ async def score_resume(
         
         return JSONResponse(content={
             "score": result["score"],
+            "raw_similarity": result["raw_similarity"],
             "explanation": result["explanation"]
         })
     except Exception as e:

@@ -229,12 +229,18 @@ textarea:focus {
   100% { transform: rotate(360deg); }
 }
 
-/* Results Section */
+.scores-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
 .score-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 2rem 0;
 }
 
 .score-circle {

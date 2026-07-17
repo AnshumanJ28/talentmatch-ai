@@ -38,6 +38,7 @@ class InferencePipeline:
 
         return {
             "score": ranked["score"],
+            "raw_similarity": ranked["raw_similarity"],
             "explanation": explanation,
             "parsed_resume": resume.model_dump(),
         }

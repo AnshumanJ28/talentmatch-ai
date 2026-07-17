@@ -123,13 +123,22 @@ function showResults(data) {
   const score = data.score;
   const percentage = Math.round(score * 100);
   
+  const semanticScore = data.raw_similarity || 0;
+  // Semantic score could be mathematically -1 to 1, but normally 0 to 1 for these embeddings.
+  // We'll normalize it just in case, but assuming it's 0-1 based on the output.
+  const semanticPercentage = Math.round(Math.max(0, semanticScore) * 100);
+
   // Transition UI
   inputSection.style.display = 'none';
   resultsSection.style.display = 'block';
   
+  const semanticCirclePath = document.getElementById('semanticCirclePath');
+  const semanticValue = document.getElementById('semanticValue');
+
   // Animate Circular Progress
   setTimeout(() => {
     scoreCirclePath.setAttribute('stroke-dasharray', `${percentage}, 100`);
+    semanticCirclePath.setAttribute('stroke-dasharray', `${semanticPercentage}, 100`);
     
     // Set color based on score
     if (percentage >= 75) {
@@ -139,10 +148,19 @@ function showResults(data) {
     } else {
       scoreCirclePath.style.stroke = 'var(--danger-color)';
     }
+
+    if (semanticPercentage >= 75) {
+      semanticCirclePath.style.stroke = 'var(--success-color)';
+    } else if (semanticPercentage >= 50) {
+      semanticCirclePath.style.stroke = 'var(--accent-color)';
+    } else {
+      semanticCirclePath.style.stroke = 'var(--danger-color)';
+    }
   }, 100);
 
   // Count up animation for number
   animateValue(scoreValue, 0, percentage, 1500);
+  animateValue(semanticValue, 0, semanticPercentage, 1500);
 
   // Parse Analysis Grid (Strengths & Improvements)
   const analysisGrid = document.getElementById('analysisGrid');
@@ -213,9 +231,15 @@ function showResults(data) {
 resetBtn.addEventListener('click', () => {
   scoreForm.reset();
   fileNameDisplay.textContent = '';
+  charCountDisplay.textContent = '0 / 1500';
   resultsSection.style.display = 'none';
   inputSection.style.display = 'block';
   scoreCirclePath.setAttribute('stroke-dasharray', '0, 100');
+  
+  const semanticCirclePath = document.getElementById('semanticCirclePath');
+  if (semanticCirclePath) {
+    semanticCirclePath.setAttribute('stroke-dasharray', '0, 100');
+  }
 });
 
 // Utilities
