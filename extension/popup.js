@@ -148,14 +148,24 @@ document.addEventListener('DOMContentLoaded', () => {
   function extractTextFromPage() {
     // 1. Google Docs specific extraction
     if (window.location.hostname.includes('docs.google.com')) {
+      // First try the paragraph renderer (older docs format)
       const paragraphs = document.querySelectorAll('.kix-paragraphrenderer');
       if (paragraphs.length > 0) {
         let docsText = '';
-        paragraphs.forEach(p => {
-          docsText += p.innerText + '\\n';
-        });
+        paragraphs.forEach(p => { docsText += p.innerText + '\\n'; });
         return docsText.trim();
       }
+      
+      // If canvas/new format, the text is still exposed in the editor container but not paragraphs
+      const editor = document.querySelector('.kix-appview-editor') || document.querySelector('#kix-appview');
+      if (editor) {
+        // Grab innerText of just the editor, ignoring the top menus (File, Edit, etc)
+        return editor.innerText.trim();
+      }
+
+      // If we are on Google Docs but can't find the editor, do NOT fallback to body.innerText 
+      // because it will grab all the File/Edit/View menus.
+      return "";
     }
 
     // 2. Try to find common JD containers (LinkedIn, Indeed, etc)
