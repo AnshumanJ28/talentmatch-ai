@@ -331,3 +331,117 @@ textarea:focus {
   color: var(--text-secondary);
   font-size: 0.9rem;
 }
+
+/* Beautiful UI for Breakdown */
+.narrative-summary {
+  background: rgba(59, 130, 246, 0.1);
+  border-left: 4px solid var(--accent-color);
+  padding: 1rem 1.5rem;
+  border-radius: 0 12px 12px 0;
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.skills-col h4 {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.matched-dot { background: var(--success-color); box-shadow: 0 0 10px var(--success-color); }
+.missing-dot { background: var(--danger-color); box-shadow: 0 0 10px var(--danger-color); }
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.skill-tag.matched {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.skill-tag.missing {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger-color);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.skill-tag.empty {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-secondary);
+}
+
+/* Dev Details Accordion */
+.dev-details {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+}
+
+.dev-details summary {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-secondary);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.dev-details summary:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.dev-details summary::before {
+  content: "▶";
+  font-size: 0.8em;
+  margin-right: 10px;
+  transition: transform 0.2s;
+}
+
+.dev-details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.dev-details .explanation-content {
+  padding: 1.5rem;
+  border-top: 1px solid var(--card-border);
+  font-size: 0.85rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}

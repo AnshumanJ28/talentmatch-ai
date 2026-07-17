@@ -108,7 +108,6 @@ function showResults(data) {
   resultsSection.style.display = 'block';
   
   // Animate Circular Progress
-  // stroke-dasharray format: "value, 100"
   setTimeout(() => {
     scoreCirclePath.setAttribute('stroke-dasharray', `${percentage}, 100`);
     
@@ -125,8 +124,34 @@ function showResults(data) {
   // Count up animation for number
   animateValue(scoreValue, 0, percentage, 1500);
 
-  // Format explanation JSON
-  explanationContent.textContent = JSON.stringify(data.explanation, null, 2);
+  // Parse Narrative Summary
+  const narrativeSummary = document.getElementById('narrativeSummary');
+  if (data.explanation && data.explanation.narrative_summary) {
+    narrativeSummary.textContent = data.explanation.narrative_summary;
+    narrativeSummary.style.display = 'block';
+  } else {
+    narrativeSummary.style.display = 'none';
+  }
+
+  // Parse Skills
+  const skillsContainer = document.getElementById('skillsContainer');
+  const matchedSkillsDiv = document.getElementById('matchedSkills');
+  const missingSkillsDiv = document.getElementById('missingSkills');
+  
+  if (data.explanation && data.explanation.skill_gap) {
+    skillsContainer.style.display = 'block';
+    const matched = data.explanation.skill_gap.matched_skills || [];
+    const missing = data.explanation.skill_gap.missing_skills || [];
+    
+    matchedSkillsDiv.innerHTML = matched.map(s => `<span class="skill-tag matched">${s}</span>`).join('') || '<span class="skill-tag empty">None found</span>';
+    missingSkillsDiv.innerHTML = missing.map(s => `<span class="skill-tag missing">${s}</span>`).join('') || '<span class="skill-tag empty">None missing</span>';
+  } else {
+    skillsContainer.style.display = 'none';
+  }
+
+  // Format full JSON for developer details
+  const explanationContent = document.getElementById('explanationContent');
+  explanationContent.textContent = JSON.stringify(data.explanation || data, null, 2);
 }
 
 // Reset UI

@@ -72,12 +72,27 @@
             <div class="score-label">Match Score</div>
           </div>
 
-          <div class="explanation-box">
-            <h3>Detailed Breakdown</h3>
+          <div id="narrativeSummary" class="narrative-summary"></div>
+          
+          <div id="skillsContainer" class="skills-container" style="display: none;">
+             <div class="skills-grid">
+               <div class="skills-col">
+                 <h4><span class="dot matched-dot"></span> Matched Skills</h4>
+                 <div id="matchedSkills" class="skill-tags"></div>
+               </div>
+               <div class="skills-col">
+                 <h4><span class="dot missing-dot"></span> Missing Skills</h4>
+                 <div id="missingSkills" class="skill-tags"></div>
+               </div>
+             </div>
+          </div>
+
+          <details class="dev-details">
+            <summary>View Developer Details</summary>
             <div id="explanationContent" class="explanation-content">
               <!-- Rendered JSON/Text will go here -->
             </div>
-          </div>
+          </details>
           
           <button class="btn-secondary" id="resetBtn">Analyze Another</button>
         </section>
