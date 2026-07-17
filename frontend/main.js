@@ -1,5 +1,5 @@
 // API Configuration
-const API_URL = 'https://talentmatch-ai-jwqd.onrender.com'; // Change for production
+const API_URL = 'https://talentmatch-ai-jwqd.onrender.com/api/score'; // Change for production
 
 // Elements
 const scoreForm = document.getElementById('scoreForm');
