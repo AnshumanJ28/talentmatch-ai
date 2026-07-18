@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "TalentMatch AI",
+  "version": "1.0",
+  "description": "Instantly score your resume against any job description online.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "TalentMatch AI Scorer"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ]
+}

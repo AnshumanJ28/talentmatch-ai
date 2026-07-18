@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Optional
 
 from src.embeddings.generator import embed
 from src.explainability.explainer import explain
 from src.features.engineering import build_features
-from src.parsing.llm_parser import parse_resume
+from src.parsing.llm_parser import parse_resume, parse_resume_from_text
 from src.ranking.ranker import rank_with_breakdown
 from src.skills.extractor import extract_skills
 
@@ -18,8 +19,13 @@ class InferencePipeline:
     LightGBM — see src/ranking/ranker.py for why.
     """
 
-    def run(self, resume_pdf_path: Path, job_description_text: str) -> dict:
-        resume = parse_resume(resume_pdf_path)
+    def run(self, resume_pdf_path: Optional[Path] = None, job_description_text: str = "", resume_text: Optional[str] = None) -> dict:
+        if resume_text:
+            resume = parse_resume_from_text(resume_text)
+        elif resume_pdf_path:
+            resume = parse_resume(resume_pdf_path)
+        else:
+            raise ValueError("Either resume_pdf_path or resume_text must be provided.")
         skills = extract_skills(resume)
         features = build_features(resume, skills)
 
@@ -38,6 +44,7 @@ class InferencePipeline:
 
         return {
             "score": ranked["score"],
+            "raw_similarity": ranked["raw_similarity"],
             "explanation": explanation,
             "parsed_resume": resume.model_dump(),
         }
