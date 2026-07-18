@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   autoExtractBtn.addEventListener('click', autoExtractJD);
 
   jobDescriptionInput.addEventListener('input', (e) => {
-    charCountDisplay.textContent = `${e.target.value.length} / 1500`;
+    charCountDisplay.textContent = `${e.target.value.length} / 10000`;
   });
 
   scoreForm.addEventListener('submit', async (e) => {
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       formData.append('pdf_file', file);
     }
-    formData.append('job_description', jdText.substring(0, 1500)); // enforce limit
+    formData.append('job_description', jdText.substring(0, 10000)); // enforce limit
 
     try {
       const response = await fetch(API_URL, {
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resultsSection.style.display = 'none';
     inputSection.style.display = 'block';
     scoreCirclePath.setAttribute('stroke-dasharray', '0, 100');
-    charCountDisplay.textContent = '0 / 1500';
+    charCountDisplay.textContent = '0 / 10000';
     autoExtractJD(); // Try to get text again
   });
 
@@ -234,8 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
              return;
           }
           if (text.length > 50) { // arbitrary minimum
-             jobDescriptionInput.value = text.substring(0, 1500);
-             charCountDisplay.textContent = `${jobDescriptionInput.value.length} / 1500`;
+             jobDescriptionInput.value = text.substring(0, 10000);
+             charCountDisplay.textContent = `${jobDescriptionInput.value.length} / 10000`;
           }
         }
       });
