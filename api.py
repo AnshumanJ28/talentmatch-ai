@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+from typing import Optional
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -28,9 +29,9 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 @app.post("/api/score")
 async def score_resume(
-    pdf_file: UploadFile = File(None),
+    pdf_file: Optional[UploadFile] = File(None),
     job_description: str = Form(...),
-    resume_text: str = Form(None)
+    resume_text: Optional[str] = Form(None)
 ):
     if not job_description or not job_description.strip():
         raise HTTPException(status_code=400, detail="Job description cannot be empty.")

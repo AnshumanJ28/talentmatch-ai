@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Optional
 
 from src.embeddings.generator import embed
 from src.explainability.explainer import explain
@@ -16,9 +17,7 @@ class InferencePipeline:
     app.py needs for the "upload one resume, score against one JD" use
     case described in the execution plan (Stage 3). No FAISS, no
     LightGBM — see src/ranking/ranker.py for why.
-    """
-
-    def run(self, resume_pdf_path: Path | None = None, job_description_text: str = "", resume_text: str | None = None) -> dict:
+    def run(self, resume_pdf_path: Optional[Path] = None, job_description_text: str = "", resume_text: Optional[str] = None) -> dict:
         if resume_text:
             resume = parse_resume_from_text(resume_text)
         elif resume_pdf_path:
