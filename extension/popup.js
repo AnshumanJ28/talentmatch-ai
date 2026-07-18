@@ -220,42 +220,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // This runs IN THE CONTEXT OF THE WEBPAGE
   function extractTextFromPage() {
-    // 1. Google Docs specific extraction
-    if (window.location.hostname.includes('docs.google.com')) {
-      // First try the paragraph renderer (older docs format)
-      const paragraphs = document.querySelectorAll('.kix-paragraphrenderer');
-      if (paragraphs.length > 0) {
-        let docsText = '';
-        paragraphs.forEach(p => { docsText += p.innerText + '\\n'; });
-        return docsText.trim();
-      }
-      
-      // If canvas/new format, the text is still exposed in the editor container but not paragraphs
-      const editor = document.querySelector('.kix-appview-editor') || document.querySelector('#kix-appview');
-      if (editor) {
-        // Grab innerText of just the editor, ignoring the top menus (File, Edit, etc)
-        return editor.innerText.trim();
-      }
-
-      // If we are on Google Docs but can't find the editor, do NOT fallback to body.innerText 
-      // because it will grab all the File/Edit/View menus.
-      return "";
-    }
-
-    // 2. Try to find common JD containers (LinkedIn, Indeed, etc)
+    // 1. Try to find common JD containers (LinkedIn, Indeed, etc)
     const selectors = [
-      '#job-details', // LinkedIn
+      '#job-details', // LinkedIn split view
+      '.jobs-description__content', // LinkedIn standalone
+      '.jobs-search__job-details--container', // LinkedIn search right pane
+      '.job-view-layout', // LinkedIn alternate
       '.job-description', 
       '#jobDescriptionText', // Indeed
-      '.jobDescriptionContent'
+      '.jobDescriptionContent',
+      'div[data-testid="job-description"]' // Modern job boards
     ];
     
     for (let s of selectors) {
       const el = document.querySelector(s);
-      if (el) return el.innerText;
+      if (el && el.innerText.length > 50) return el.innerText.trim();
+    }
+    
+    // 2. Google Docs specific extraction
+    if (window.location.hostname.includes('docs.google.com')) {
+      let text = document.body.innerText;
+      
+      // Clean up common Google Docs UI garbage that bleeds into the body text
+      const uiGarbage = [
+        /FileEditViewInsertFormatTools.*?Help/g,
+        /Normal text/g,
+        /Calibri/g,
+        /Arial/g,
+        /Editing/g,
+        /Show tabs and outlines/g,
+        /Turn on screen reader support/g,
+        /To enable screen reader support.*?Ctrl\+slash/g,
+        /Banner hidden/g,
+        /^[\s\d]+$/gm // Remove ruler numbers
+      ];
+      
+      for (let regex of uiGarbage) {
+        text = text.replace(regex, "");
+      }
+      return text.trim();
     }
     
     // 3. Fallback: Just grab the body text
-    return document.body.innerText;
+    return document.body.innerText.trim();
   }
 });
