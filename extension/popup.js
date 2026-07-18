@@ -61,8 +61,16 @@ document.addEventListener('DOMContentLoaded', () => {
         target: { tabId: tab.id },
         func: extractTextFromPage
       }, (results) => {
+        if (chrome.runtime.lastError) {
+          showToast("Error: " + chrome.runtime.lastError.message);
+          return;
+        }
         if (results && results[0] && results[0].result) {
           const text = results[0].result;
+          if (text.startsWith && text.startsWith("ERROR:")) {
+             showToast("Extract Error: " + text.substring(0, 50));
+             return;
+          }
           if (text.length > 50) {
              chrome.storage.local.set({ resumeText: text }, () => {
                setProfileActive(text);
@@ -76,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     } catch (e) {
-      showToast("Error saving profile.");
+      showToast("Error saving profile: " + e.message);
     }
   });
 
@@ -205,8 +213,16 @@ document.addEventListener('DOMContentLoaded', () => {
         target: { tabId: tab.id },
         func: extractTextFromPage
       }, (results) => {
+        if (chrome.runtime.lastError) {
+          console.error("Injection error:", chrome.runtime.lastError.message);
+          return;
+        }
         if (results && results[0] && results[0].result) {
           const text = results[0].result;
+          if (text.startsWith && text.startsWith("ERROR:")) {
+             console.error(text);
+             return;
+          }
           if (text.length > 50) { // arbitrary minimum
              jobDescriptionInput.value = text.substring(0, 1500);
              charCountDisplay.textContent = `${jobDescriptionInput.value.length} / 1500`;
@@ -220,48 +236,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // This runs IN THE CONTEXT OF THE WEBPAGE
   function extractTextFromPage() {
-    // 1. Try to find common JD containers (LinkedIn, Indeed, etc)
-    const selectors = [
-      '#job-details', // LinkedIn split view
-      '.jobs-description__content', // LinkedIn standalone
-      '.jobs-search__job-details--container', // LinkedIn search right pane
-      '.job-view-layout', // LinkedIn alternate
-      '.job-description', 
-      '#jobDescriptionText', // Indeed
-      '.jobDescriptionContent',
-      'div[data-testid="job-description"]' // Modern job boards
-    ];
-    
-    for (let s of selectors) {
-      const el = document.querySelector(s);
-      if (el && el.innerText.length > 50) return el.innerText.trim();
-    }
-    
-    // 2. Google Docs specific extraction
-    if (window.location.hostname.includes('docs.google.com')) {
-      let text = document.body.innerText;
-      
-      // Clean up common Google Docs UI garbage that bleeds into the body text
-      const uiGarbage = [
-        /FileEditViewInsertFormatTools.*?Help/g,
-        /Normal text/g,
-        /Calibri/g,
-        /Arial/g,
-        /Editing/g,
-        /Show tabs and outlines/g,
-        /Turn on screen reader support/g,
-        /To enable screen reader support.*?Ctrl\+slash/g,
-        /Banner hidden/g,
-        /^[\s\d]+$/gm // Remove ruler numbers
+    try {
+      // 1. Google Docs specific extraction
+      if (window.location.hostname.includes('docs.google.com')) {
+        let text = document.body ? document.body.innerText : "";
+        if (!text) {
+          const editor = document.querySelector('.kix-appview-editor') || document.querySelector('#kix-appview');
+          if (editor) text = editor.innerText;
+        }
+
+        if (text) {
+          const uiGarbage = [
+            /FileEditViewInsertFormatTools.*?Help/g,
+            /Normal text/g,
+            /Calibri/g,
+            /Arial/g,
+            /Editing/g,
+            /Show tabs and outlines/g,
+            /Turn on screen reader support/g,
+            /To enable screen reader support.*?Ctrl\+slash/g,
+            /Banner hidden/g,
+            /^[\s\d]+$/gm // Remove ruler numbers
+          ];
+          for (let regex of uiGarbage) {
+            text = text.replace(regex, "");
+          }
+          return text.trim();
+        }
+      }
+
+      // 2. Try to find common JD containers (LinkedIn, Indeed, etc)
+      const selectors = [
+        '#job-details', // LinkedIn split view
+        '.jobs-description__content', // LinkedIn standalone
+        '.jobs-search__job-details--container', // LinkedIn search right pane
+        '.job-view-layout', // LinkedIn alternate
+        '.job-description', 
+        '#jobDescriptionText', // Indeed
+        '.jobDescriptionContent',
+        'div[data-testid="job-description"]' // Modern job boards
       ];
       
-      for (let regex of uiGarbage) {
-        text = text.replace(regex, "");
+      for (let s of selectors) {
+        const el = document.querySelector(s);
+        if (el && el.innerText && el.innerText.length > 50) {
+           return el.innerText.trim();
+        }
       }
-      return text.trim();
+      
+      // 3. Fallback: Just grab the body text
+      if (document.body && document.body.innerText) {
+        return document.body.innerText.trim();
+      }
+      return "";
+    } catch (e) {
+      return "ERROR: " + e.message;
     }
-    
-    // 3. Fallback: Just grab the body text
-    return document.body.innerText.trim();
   }
 });
