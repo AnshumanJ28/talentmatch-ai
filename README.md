@@ -36,8 +36,9 @@ src/
 └── devices.py            # Device management (CPU/GPU)
 tests/
 └── test_pipeline.py       # End-to-end pipeline test
-api.py                       # FastAPI backend
-frontend/                    # Vite + Vanilla JS frontend application
+app.py                       # Gradio web UI — single entry point for the app
+Dockerfile / docker-compose.yml   # Container build + run config
+requirements.txt              # Python dependencies
 ```
 
 ## Architecture Notes
@@ -50,25 +51,15 @@ frontend/                    # Vite + Vanilla JS frontend application
 
 ### Local Development
 
-#### Backend (FastAPI)
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 export GROQ_API_KEY=your_key
-python api.py
+python -m pytest tests/ -v   # optional: run the test suite first
+python app.py
 ```
-*API runs on **http://localhost:8000***
 
-#### Frontend (Vite)
-Open a second terminal window:
-```bash
-cd frontend
-npm install
-npm run dev
-```
-*Frontend runs on the local Vite port (usually **http://localhost:5173**)*
-
-Open **http://localhost:5173**.
+Open **http://localhost:7860** (Gradio's default port).
 
 > **Windows users:** activate the venv with `.venv\Scripts\activate` instead, and set the key with `$env:GROQ_API_KEY="your_key"` (PowerShell) or via a `.env` file (see below).
 
@@ -88,14 +79,6 @@ docker build -t talentmatch .
 docker compose up
 ```
 
-### Deploy to Hugging Face Spaces
-
-1. **New Space** → SDK: **Docker** → Hardware: **CPU basic** (free).
-2. Connect it to this GitHub repo, or `git push space main`.
-3. **Space Settings → Repository secrets** → add `GROQ_API_KEY`.
-
-> Free CPU Spaces sleep after inactivity and take ~20–40s to cold-start on the next visit — that's expected, not a bug.
-
 ## Requirements
 
 - Python 3.11+
@@ -107,9 +90,9 @@ See `TalentMatch-AI-Execution-Plan.md` for the full stage-by-stage build plan th
 
 ## Contributors
 
-- **Anshuman Pandey** – Machine Learning pipeline, Model integration, and Docker containerization.
-- **Arnav Shukla** – Hosting, Deployment, API endpoints, Frontend UI, and Chrome/Edge Extension integration.
+- **Anshuman Pandey** – Machine Learning pipeline, model integration, Gradio UI, and Docker containerization.
+- **Arnav Shukla** – Hosting, deployment, live demo setup, Edge extension integration, and integration work across the app.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+No license has been added to this repository yet. Add a `LICENSE` file (e.g. MIT) if you intend for others to reuse the code.
