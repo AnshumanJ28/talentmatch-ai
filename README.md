@@ -12,8 +12,6 @@ Upload a resume PDF and paste a job description — get back a 0–1 match score
 
 TalentMatch AI simulates how an Applicant Tracking System (ATS) evaluates a candidate against a job posting. Instead of a black-box score, it surfaces *why* a resume matches (or doesn't) — the experience signals, skill overlaps, and feature-level scoring that drove the result — so both recruiters and candidates can understand the outcome.
 
-This is the containerized, production-ready version of an original research notebook (`Projects.ipynb`), rebuilt from the ground up per `TalentMatch-AI-Execution-Plan.md`.
-
 ## How It Works
 
 1. **Parse** — The resume PDF is parsed and structured using an LLM (Groq).
@@ -42,16 +40,11 @@ api.py                       # FastAPI backend
 frontend/                    # Vite + Vanilla JS frontend application
 ```
 
-## What Changed vs. the Original Notebook
+## Architecture Notes
 
-This project started as a Google Colab notebook and was fully de-Colab'd for production use:
-
-- **No Colab dependencies** — `drive.mount`, `userdata.get`, `files.upload` removed entirely.
-- **Single source of truth** — `DeviceManager`, `ProjectConfig`, `DirectoryManager`, secrets access, and `get_logger` were each redefined 3–6 times across the notebook's phase bootstrap cells. Each now has exactly one canonical implementation, in `src/devices.py` and `src/config.py`.
-- **Fixed an ordering bug** — `deployment_summary = run_phase10()` was previously called one cell before `run_phase10` was even defined.
-- **Modularized** — Phases 1–8 of the notebook are now separate, testable modules (`src/parsing`, `src/skills`, `src/features`, `src/embeddings`, `src/ranking`, `src/explainability`), wired together by `src/pipeline.py`.
-- **Simplified ranking for v1** — Phase 6 (FAISS retrieval) and the LightGBM ranker were dropped. A single upload-one-resume/score-against-one-JD flow doesn't need a vector index or a learning-to-rank model trained on candidate pools. `src/ranking/ranker.py`'s `HeuristicRanker` is the default (and only) ranker: **60% cosine similarity** between resume and JD embeddings, **40% spread across fused numeric features**.
-- **Dropped offline tooling** — Phases 9–10 (offline evaluation, model pickling/deployment packaging) were batch tooling, not part of the live request-response path, and were removed from the app.
+- **Single source of truth** — `DeviceManager`, `ProjectConfig`, `DirectoryManager`, secrets access, and `get_logger` each have exactly one canonical implementation, in `src/devices.py` and `src/config.py`.
+- **Modular pipeline** — Parsing, skill extraction, feature engineering, embeddings, ranking, and explainability are separate, testable modules under `src/`, wired together by `src/pipeline.py`.
+- **Ranking (v1)** — `src/ranking/ranker.py`'s `HeuristicRanker` is the sole ranker: **60% cosine similarity** between resume and JD embeddings, **40% spread across fused numeric features**. No vector index or learning-to-rank model is used — a single upload-one-resume/score-against-one-JD flow doesn't need one.
 
 ## Getting Started
 
