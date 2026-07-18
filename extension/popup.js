@@ -172,8 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const visitWebsiteBtn = document.getElementById('visitWebsiteBtn');
   if (visitWebsiteBtn) {
     visitWebsiteBtn.addEventListener('click', () => {
-      // Change this to your deployed URL if you are hosting the website!
-      chrome.tabs.create({ url: 'http://localhost:5173' });
+      chrome.tabs.create({ url: 'https://talentmatch-ai-orpin.vercel.app/' });
     });
   }
 
