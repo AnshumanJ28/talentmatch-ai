@@ -245,10 +245,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // This runs IN THE CONTEXT OF THE WEBPAGE
-  function extractTextFromPage() {
+  async function extractTextFromPage() {
     try {
-      // 1. Google Docs specific extraction
+      // 1. Google Docs specific extraction using the official Export API!
       if (window.location.hostname.includes('docs.google.com')) {
+        const match = window.location.pathname.match(/\/d\/([a-zA-Z0-9-_]+)/);
+        if (match && match[1]) {
+          const docId = match[1];
+          try {
+            // Fetch the pristine text document directly from Google Docs
+            const response = await fetch(`https://docs.google.com/document/d/${docId}/export?format=txt`);
+            if (response.ok) {
+              const text = await response.text();
+              if (text && text.trim().length > 50) {
+                return text.trim();
+              }
+            }
+          } catch (e) {
+            console.log("Failed to fetch doc text, falling back...", e);
+          }
+        }
+        
+        // Fallback if export fails
         let text = document.body ? document.body.innerText : "";
         if (!text) {
           const editor = document.querySelector('.kix-appview-editor') || document.querySelector('#kix-appview');
