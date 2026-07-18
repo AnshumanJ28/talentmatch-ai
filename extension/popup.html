@@ -14,11 +14,22 @@
     </header>
 
     <main class="main-content">
+      <div id="profileSection" class="profile-section">
+        <div class="profile-status">
+          <span id="profileStatusIcon">❌</span>
+          <span id="profileStatusText">No resume saved</span>
+        </div>
+        <div class="profile-actions">
+          <button type="button" id="saveProfileBtn" class="btn-small">Save Page as Resume</button>
+          <button type="button" id="clearProfileBtn" class="btn-small" style="display: none;">Clear</button>
+        </div>
+      </div>
+
       <section id="inputSection">
         <form id="scoreForm">
-          <div class="form-group">
+          <div class="form-group" id="fileUploadGroup">
             <label for="resumeUpload">Resume (PDF)</label>
-            <input type="file" id="resumeUpload" name="pdf_file" accept=".pdf" required />
+            <input type="file" id="resumeUpload" name="pdf_file" accept=".pdf" />
           </div>
 
           <div class="form-group">

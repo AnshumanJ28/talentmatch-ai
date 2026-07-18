@@ -221,6 +221,69 @@ class ResumeParsingPipeline:
                 ocr_used=False,
             )
 
+    def parse_single_from_text(self, raw_text: str) -> ParsingResult:
+        start_time = time.monotonic()
+        source_name = "raw_text_input"
+
+        try:
+            cleaned_text = self.cleaner.clean(raw_text)
+
+            self._save_json(
+                "extracted_text",
+                f"{source_name}.json",
+                {
+                    "source_file": source_name,
+                    "raw_text": raw_text,
+                    "cleaned_text": cleaned_text,
+                    "page_count": 1,
+                    "used_ocr": False,
+                    "average_confidence": 1.0,
+                },
+            )
+
+            prompt = self.prompt_builder.build_parsing_prompt(cleaned_text)
+            raw_llm_output = self.groq_client.complete(
+                system_prompt=self.prompt_builder.SYSTEM_PROMPT, user_prompt=prompt
+            )
+
+            parsed_dict = self.json_repairer.repair(raw_llm_output)
+            self._save_json("parsed_json", f"{source_name}.json", parsed_dict)
+
+            parsed_dict["raw_extracted_text"] = cleaned_text
+            parsed_dict["metadata"] = {
+                "source_file": source_name,
+                "llm_model_used": CONFIG.groq_model_name,
+                "ocr_used": False,
+                "page_count": 1,
+                "extraction_confidence": 1.0,
+            }
+
+            resume = self._validate_with_retry(parsed_dict, raw_llm_output)
+            self._save_json("validated_json", f"{source_name}.json", resume.model_dump())
+
+            latency = time.monotonic() - start_time
+            logger.info(f"Parsed text input successfully in {latency:.2f}s.")
+            return ParsingResult(
+                success=True,
+                source_file=source_name,
+                resume=resume,
+                error=None,
+                latency_seconds=latency,
+                ocr_used=False,
+            )
+
+        except Exception as exc:
+            latency = time.monotonic() - start_time
+            logger.error(f"Failed to parse raw text: {exc}")
+            return ParsingResult(
+                success=False,
+                source_file=source_name,
+                resume=None,
+                error=str(exc),
+                latency_seconds=latency,
+                ocr_used=False,
+            )
+
     def _validate_with_retry(self, parsed_dict: dict, raw_llm_output: str) -> ResumeSchema:
         current_dict = parsed_dict
         current_raw = raw_llm_output
@@ -260,4 +323,11 @@ def parse_resume(pdf_path: Path) -> ResumeSchema:
     result = _get_pipeline().parse_single(Path(pdf_path))
     if not result.success:
         raise RuntimeError(f"Failed to parse '{pdf_path}': {result.error}")
+    return result.resume
+
+def parse_resume_from_text(raw_text: str) -> ResumeSchema:
+    """Alternative pipeline contract: Raw text in, validated ResumeSchema out."""
+    result = _get_pipeline().parse_single_from_text(raw_text)
+    if not result.success:
+        raise RuntimeError(f"Failed to parse raw text: {result.error}")
     return result.resume

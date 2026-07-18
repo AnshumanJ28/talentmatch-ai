@@ -177,3 +177,27 @@ textarea {
 .toast.show {
   transform: translateY(0);
 }
+
+.profile-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.profile-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 0.5rem;
+}

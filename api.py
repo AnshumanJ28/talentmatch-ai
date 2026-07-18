@@ -28,23 +28,28 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 @app.post("/api/score")
 async def score_resume(
-    pdf_file: UploadFile = File(...),
-    job_description: str = Form(...)
+    pdf_file: UploadFile = File(None),
+    job_description: str = Form(...),
+    resume_text: str = Form(None)
 ):
-    if not pdf_file.filename.endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
-    
     if not job_description or not job_description.strip():
         raise HTTPException(status_code=400, detail="Job description cannot be empty.")
 
-    # Save uploaded file temporarily
-    temp_path = UPLOAD_DIR / pdf_file.filename
-    try:
-        with temp_path.open("wb") as buffer:
-            shutil.copyfileobj(pdf_file.file, buffer)
+    if not pdf_file and not resume_text:
+        raise HTTPException(status_code=400, detail="Must provide either a pdf_file or resume_text.")
 
-        # Run pipeline
-        result = pipeline.run(temp_path, job_description)
+    temp_path = None
+    try:
+        if pdf_file:
+            if not pdf_file.filename.endswith(".pdf"):
+                raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+            
+            temp_path = UPLOAD_DIR / pdf_file.filename
+            with temp_path.open("wb") as buffer:
+                shutil.copyfileobj(pdf_file.file, buffer)
+            result = pipeline.run(resume_pdf_path=temp_path, job_description_text=job_description)
+        else:
+            result = pipeline.run(resume_text=resume_text, job_description_text=job_description)
         
         return JSONResponse(content={
             "score": result["score"],
@@ -55,7 +60,7 @@ async def score_resume(
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         # Cleanup
-        if temp_path.exists():
+        if temp_path and temp_path.exists():
             os.remove(temp_path)
 
 if __name__ == "__main__":

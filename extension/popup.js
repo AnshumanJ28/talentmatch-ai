@@ -15,7 +15,72 @@ document.addEventListener('DOMContentLoaded', () => {
   const charCountDisplay = document.getElementById('charCount');
   const autoExtractBtn = document.getElementById('autoExtractBtn');
 
-  // Try to auto-extract text on load
+  // Profile elements
+  const fileUploadGroup = document.getElementById('fileUploadGroup');
+  const profileStatusIcon = document.getElementById('profileStatusIcon');
+  const profileStatusText = document.getElementById('profileStatusText');
+  const saveProfileBtn = document.getElementById('saveProfileBtn');
+  const clearProfileBtn = document.getElementById('clearProfileBtn');
+
+  let savedResumeText = null;
+
+  // Load profile on start
+  chrome.storage.local.get(['resumeText'], (result) => {
+    if (result.resumeText) {
+      setProfileActive(result.resumeText);
+    }
+  });
+
+  function setProfileActive(text) {
+    savedResumeText = text;
+    profileStatusIcon.textContent = '✅';
+    profileStatusText.textContent = 'Profile saved';
+    fileUploadGroup.style.display = 'none';
+    clearProfileBtn.style.display = 'inline-block';
+    saveProfileBtn.textContent = 'Update Profile';
+  }
+
+  clearProfileBtn.addEventListener('click', () => {
+    chrome.storage.local.remove(['resumeText'], () => {
+      savedResumeText = null;
+      profileStatusIcon.textContent = '❌';
+      profileStatusText.textContent = 'No resume saved';
+      fileUploadGroup.style.display = 'block';
+      clearProfileBtn.style.display = 'none';
+      saveProfileBtn.textContent = 'Save Page as Resume';
+      resumeUpload.value = '';
+    });
+  });
+
+  saveProfileBtn.addEventListener('click', async () => {
+    try {
+      let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (!tab) return;
+      
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: extractTextFromPage
+      }, (results) => {
+        if (results && results[0] && results[0].result) {
+          const text = results[0].result;
+          if (text.length > 50) {
+             chrome.storage.local.set({ resumeText: text }, () => {
+               setProfileActive(text);
+               showToast("Resume profile saved successfully!");
+             });
+          } else {
+             showToast("Not enough text on page to save.");
+          }
+        } else {
+          showToast("Failed to extract text from this page.");
+        }
+      });
+    } catch (e) {
+      showToast("Error saving profile.");
+    }
+  });
+
+  // Try to auto-extract JD on load
   autoExtractJD();
 
   autoExtractBtn.addEventListener('click', autoExtractJD);
@@ -30,12 +95,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const file = resumeUpload.files[0];
     const jdText = jobDescriptionInput.value;
 
-    if (!file || !jdText) {
-      showToast("Please provide both a PDF and a Job Description.");
+    if (!savedResumeText && !file) {
+      showToast("Please provide a PDF or save a profile first.");
+      return;
+    }
+    
+    if (!jdText) {
+      showToast("Please provide a Job Description.");
       return;
     }
 
-    if (file.size > 2 * 1024 * 1024) {
+    if (!savedResumeText && file && file.size > 2 * 1024 * 1024) {
       showToast("File is too large! Please upload a PDF under 2MB.");
       return;
     }
@@ -44,7 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
     btnText.textContent = "Analyzing...";
 
     const formData = new FormData();
-    formData.append('pdf_file', file);
+    if (savedResumeText) {
+      formData.append('resume_text', savedResumeText);
+    } else {
+      formData.append('pdf_file', file);
+    }
     formData.append('job_description', jdText.substring(0, 1500)); // enforce limit
 
     try {
