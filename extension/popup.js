@@ -141,6 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const data = await response.json();
+      
+      const rememberResume = document.getElementById('rememberResume');
+      if (!savedResumeText && rememberResume && rememberResume.checked && data.parsed_resume && data.parsed_resume.raw_extracted_text) {
+        const text = data.parsed_resume.raw_extracted_text;
+        chrome.storage.local.set({ resumeText: text }, () => {
+          setProfileActive(text);
+          showToast("Perfectly extracted profile saved from PDF!");
+        });
+      }
+
       showResults(data);
     } catch (error) {
       showToast(error.message);
