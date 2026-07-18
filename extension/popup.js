@@ -169,6 +169,14 @@ document.addEventListener('DOMContentLoaded', () => {
     autoExtractJD(); // Try to get text again
   });
 
+  const visitWebsiteBtn = document.getElementById('visitWebsiteBtn');
+  if (visitWebsiteBtn) {
+    visitWebsiteBtn.addEventListener('click', () => {
+      // Change this to your deployed URL if you are hosting the website!
+      chrome.tabs.create({ url: 'http://localhost:5173' });
+    });
+  }
+
   function showResults(data) {
     const score = data.score;
     const percentage = Math.round(score * 100);
