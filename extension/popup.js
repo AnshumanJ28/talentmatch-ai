@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   autoExtractBtn.addEventListener('click', autoExtractJD);
 
   jobDescriptionInput.addEventListener('input', (e) => {
-    charCountDisplay.textContent = `${e.target.value.length} / 10000`;
+    charCountDisplay.textContent = `${e.target.value.length} / 1500`;
   });
 
   scoreForm.addEventListener('submit', async (e) => {
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       formData.append('pdf_file', file);
     }
-    formData.append('job_description', jdText.substring(0, 10000)); // enforce limit
+    formData.append('job_description', jdText.substring(0, 1500)); // enforce limit
 
     try {
       const response = await fetch(API_URL, {
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resultsSection.style.display = 'none';
     inputSection.style.display = 'block';
     scoreCirclePath.setAttribute('stroke-dasharray', '0, 100');
-    charCountDisplay.textContent = '0 / 10000';
+    charCountDisplay.textContent = '0 / 1500';
     autoExtractJD(); // Try to get text again
   });
 
@@ -234,8 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
              return;
           }
           if (text.length > 50) { // arbitrary minimum
-             jobDescriptionInput.value = text.substring(0, 10000);
-             charCountDisplay.textContent = `${jobDescriptionInput.value.length} / 10000`;
+             const smartText = smartExtractJD(text);
+             jobDescriptionInput.value = smartText;
+             charCountDisplay.textContent = `${smartText.length} / 1500`;
           }
         }
       });
@@ -320,5 +321,41 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       return "ERROR: " + e.message;
     }
+  }
+
+  // Helper to find the most relevant 1500 characters of a JD
+  function smartExtractJD(text) {
+    if (text.length <= 1500) return text;
+    
+    const lowerText = text.toLowerCase();
+    const keywords = [
+      'requirements', 'qualifications', 'what you bring', 
+      'what you need', 'skills', 'responsibilities', 'what you\'ll do'
+    ];
+    
+    let bestIndex = -1;
+    for (let kw of keywords) {
+      let idx = lowerText.indexOf(kw);
+      if (idx !== -1) {
+        if (bestIndex === -1 || idx < bestIndex) {
+           bestIndex = idx;
+        }
+      }
+    }
+    
+    if (bestIndex !== -1) {
+      // Start slightly before the keyword to capture the section header
+      let start = Math.max(0, bestIndex - 50); 
+      let extracted = text.substring(start, start + 1500);
+      
+      // Clean up broken words at the end
+      let lastSpace = extracted.lastIndexOf(' ');
+      if (lastSpace > 0) {
+        extracted = extracted.substring(0, lastSpace);
+      }
+      return extracted.trim();
+    }
+    
+    return text.substring(0, 1500);
   }
 });
