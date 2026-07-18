@@ -17,6 +17,8 @@ class InferencePipeline:
     app.py needs for the "upload one resume, score against one JD" use
     case described in the execution plan (Stage 3). No FAISS, no
     LightGBM — see src/ranking/ranker.py for why.
+    """
+
     def run(self, resume_pdf_path: Optional[Path] = None, job_description_text: str = "", resume_text: Optional[str] = None) -> dict:
         if resume_text:
             resume = parse_resume_from_text(resume_text)
