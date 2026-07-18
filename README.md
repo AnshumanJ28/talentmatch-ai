@@ -110,6 +110,11 @@ docker compose up
 
 See `TalentMatch-AI-Execution-Plan.md` for the full stage-by-stage build plan this repo was implemented from.
 
+## Contributors
+
+- **Anshuman Pandey** – Machine Learning pipeline, Model integration, and Docker containerization.
+- **Arnav Shukla** – Hosting, Deployment, API endpoints, Frontend UI, and Chrome/Edge Extension integration.
+
 ## License
 
 *(Add your license here, e.g. MIT.)*
