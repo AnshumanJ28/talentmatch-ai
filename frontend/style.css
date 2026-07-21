@@ -1,33 +1,33 @@
 
 :root,
 [data-theme="dark"] {
-  /* Base — dominant light blue */
-  --bg-color: #E7EEFB;
-  --bg-shape-1: rgba(30, 64, 175, 0.10);
-  --bg-shape-2: rgba(30, 64, 175, 0.06);
+  /* Base — dominant dark blue */
+  --bg-color: #0E1B3D;
+  --bg-shape-1: rgba(59, 91, 219, 0.18);
+  --bg-shape-2: rgba(59, 91, 219, 0.10);
 
   /* Surfaces */
-  --card-bg: rgba(255, 255, 255, 0.85);
-  --card-border: rgba(30, 64, 175, 0.14);
-  --input-bg: #ffffff;
-  --input-border: rgba(30, 64, 175, 0.2);
-  --overlay-soft: rgba(30, 64, 175, 0.04);
-  --overlay-medium: rgba(30, 64, 175, 0.08);
-  --surface-sunken: rgba(30, 64, 175, 0.05);
+  --card-bg: rgba(20, 33, 71, 0.9);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --input-bg: rgba(10, 18, 42, 0.8);
+  --input-border: rgba(255, 255, 255, 0.10);
+  --overlay-soft: rgba(255, 255, 255, 0.04);
+  --overlay-medium: rgba(255, 255, 255, 0.08);
+  --surface-sunken: rgba(0, 0, 0, 0.25);
 
   /* Text */
-  --text-primary: #16213E;
-  --text-secondary: #55617A;
+  --text-primary: #F2F4FA;
+  --text-secondary: #9AA6C7;
   --text-on-accent: #ffffff;
 
-  /* Accent — Deep Blue */
-  --accent-color: #1E40AF;
-  --accent-deep: #142B6E;
-  --accent-glow: rgba(30, 64, 175, 0.20);
+  /* Accent — Bright Blue (pops against the dark bg) */
+  --accent-color: #3B5DDB;
+  --accent-deep: #24398F;
+  --accent-glow: rgba(59, 93, 219, 0.28);
 
   /* Status */
-  --success-color: #0f9d68;
-  --danger-color: #d92d20;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
 }
 
 [data-theme="light"] {
