@@ -1,33 +1,33 @@
 
 :root,
 [data-theme="dark"] {
-  /* Base */
-  --bg-color: #0B1428;
-  --bg-shape-1: rgba(30, 58, 138, 0.12);
-  --bg-shape-2: rgba(30, 58, 138, 0.07);
+  /* Base — dominant light blue */
+  --bg-color: #E7EEFB;
+  --bg-shape-1: rgba(30, 64, 175, 0.10);
+  --bg-shape-2: rgba(30, 64, 175, 0.06);
 
   /* Surfaces */
-  --card-bg: rgba(18, 30, 64, 0.92);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --input-bg: rgba(9, 17, 38, 0.75);
-  --input-border: rgba(255, 255, 255, 0.10);
-  --overlay-soft: rgba(255, 255, 255, 0.04);
-  --overlay-medium: rgba(255, 255, 255, 0.08);
-  --surface-sunken: rgba(0, 0, 0, 0.25);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(30, 64, 175, 0.14);
+  --input-bg: #ffffff;
+  --input-border: rgba(30, 64, 175, 0.2);
+  --overlay-soft: rgba(30, 64, 175, 0.04);
+  --overlay-medium: rgba(30, 64, 175, 0.08);
+  --surface-sunken: rgba(30, 64, 175, 0.05);
 
   /* Text */
-  --text-primary: #EDEFF5;
-  --text-secondary: #8C9BC2;
+  --text-primary: #16213E;
+  --text-secondary: #55617A;
   --text-on-accent: #ffffff;
 
-  /* Accent — Dark Blue (solid, not glowing) */
-  --accent-color: #2E4A9E;
-  --accent-deep: #1B2C5E;
-  --accent-glow: rgba(46, 74, 158, 0.22);
+  /* Accent — Deep Blue */
+  --accent-color: #1E40AF;
+  --accent-deep: #142B6E;
+  --accent-glow: rgba(30, 64, 175, 0.20);
 
   /* Status */
-  --success-color: #10b981;
-  --danger-color: #ef4444;
+  --success-color: #0f9d68;
+  --danger-color: #d92d20;
 }
 
 [data-theme="light"] {
