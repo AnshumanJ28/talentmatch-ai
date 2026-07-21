@@ -1,31 +1,33 @@
-/* ============================
-   Theme Tokens
-   ============================ */
+
 :root,
 [data-theme="dark"] {
   /* Base */
   --bg-color: #0A1A3F;
   --bg-shape-1: rgba(65, 105, 225, 0.35);
-  --bg-shape-2: rgba(192, 192, 192, 0.10);
+  --bg-shape-2: rgba(194, 178, 128, 0.14);
 
   /* Surfaces */
   --card-bg: rgba(39, 64, 139, 0.28);
-  --card-border: rgba(192, 192, 192, 0.15);
+  --card-border: rgba(194, 178, 128, 0.20);
   --input-bg: rgba(10, 26, 63, 0.55);
-  --input-border: rgba(192, 192, 192, 0.18);
+  --input-border: rgba(194, 178, 128, 0.25);
   --overlay-soft: rgba(255, 255, 255, 0.05);
   --overlay-medium: rgba(255, 255, 255, 0.1);
   --surface-sunken: rgba(0, 0, 0, 0.3);
 
   /* Text */
   --text-primary: #ffffff;
-  --text-secondary: #8E939A;
+  --text-secondary: #C2B280;
   --text-on-accent: #ffffff;
 
   /* Accent — Royal Blue */
   --accent-color: #4169E1;
   --accent-deep: #27408B;
   --accent-glow: rgba(65, 105, 225, 0.45);
+
+  /* Secondary Accent — Loose Sand */
+  --sand-color: #C2B280;
+  --sand-glow: rgba(194, 178, 128, 0.35);
 
   /* Status */
   --success-color: #10b981;
@@ -430,9 +432,16 @@ textarea:focus {
 
 .app-footer {
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 2rem;
+  padding-top: 0.75rem;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
+  opacity: 0.8;
+  border-top: 1px solid var(--card-border);
+}
+
+[data-theme="dark"] .app-footer {
+  border-top: 1px solid var(--sand-glow);
 }
 
 /* Beautiful UI for Breakdown */
