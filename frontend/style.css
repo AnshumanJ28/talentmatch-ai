@@ -4,20 +4,20 @@
   /* Base — dominant dark blue */
   --bg-color: #0E1B3D;
   --bg-shape-1: rgba(59, 91, 219, 0.18);
-  --bg-shape-2: rgba(59, 91, 219, 0.10);
+  --bg-shape-2: rgba(201, 169, 110, 0.08);
 
   /* Surfaces */
   --card-bg: rgba(20, 33, 71, 0.9);
-  --card-border: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(201, 169, 110, 0.16);
   --input-bg: rgba(10, 18, 42, 0.8);
-  --input-border: rgba(255, 255, 255, 0.10);
+  --input-border: rgba(201, 169, 110, 0.20);
   --overlay-soft: rgba(255, 255, 255, 0.04);
   --overlay-medium: rgba(255, 255, 255, 0.08);
   --surface-sunken: rgba(0, 0, 0, 0.25);
 
   /* Text */
   --text-primary: #F2F4FA;
-  --text-secondary: #9AA6C7;
+  --text-secondary: #C9A96E;
   --text-on-accent: #ffffff;
 
   /* Accent — Bright Blue (pops against the dark bg) */
