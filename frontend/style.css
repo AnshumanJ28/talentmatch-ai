@@ -24,12 +24,10 @@
   --accent-color: #C1622D;
   --accent-deep: #8A4520;
   --accent-glow: rgba(193, 98, 45, 0.18);
-  --accent-glow: rgba(193, 98, 45, 0.18);
 
   /* Status */
   --success-color: #10b981;
   --danger-color: #ef4444;
-}
 }
 
 [data-theme="light"] {
