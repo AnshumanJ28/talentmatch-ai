@@ -2,7 +2,7 @@
 
 **Resume ↔ Job Description ATS Match Scorer**
 
-🌐 **Live Demo:** [https://talentmatch-ai-orpin.vercel.app/](https://talentmatch-ai-orpin.vercel.app/)
+🌐 **Live Demo:** [https://talentmatch-ai-se48.vercel.app/](https://talentmatch-ai-se48.vercel.app/)
 
 Upload a resume PDF and paste a job description — get back a 0–1 match score, a plain-English explanation of the strongest signals, and a breakdown of matched, missing, and partially-matched skills.
 
