@@ -1,3 +1,17 @@
+// Theme toggle
+const THEME_KEY = 'talentmatch-theme';
+const themeToggleBtn = document.getElementById('themeToggle');
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem(THEME_KEY, theme);
+}
+
+themeToggleBtn.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  applyTheme(current === 'light' ? 'dark' : 'light');
+});
+
 // API Configuration
 const API_URL = 'https://talentmatch-ai-jwqd.onrender.com/api/score'; // Change for production
 
