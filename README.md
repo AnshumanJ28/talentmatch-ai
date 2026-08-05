@@ -4,7 +4,7 @@
 
 > v2 replaces the Groq/LLM-based pipeline with a deterministic C++ ML engine. All scoring intelligence runs natively in C++. Python is responsible only for PDF text extraction and embedding generation.
 
-🌐 **Live Demo:** [talentmatch-ai-se48.vercel.app](https://talentmatch-ai-se48.vercel.app/)
+🌐 **Live Demo:** [talentmatch-ai-se48.vercel.app](https://talentmatch-ai-o22y.vercel.app/)
 
 ---
 
