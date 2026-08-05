@@ -43,6 +43,15 @@ app.add_middleware(
 
 pipeline = InferencePipeline()
 
+@app.on_event("startup")
+async def startup_event():
+    from src.embeddings.generator import _EmbeddingModelProvider
+    import logging
+    logger = logging.getLogger("api")
+    logger.info("Pre-warming embedding model on startup...")
+    _EmbeddingModelProvider.get()
+    logger.info("Embedding model pre-warmed and ready.")
+
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 

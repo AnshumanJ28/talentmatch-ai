@@ -42,6 +42,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
+ENV HF_HOME=/app/.cache
+
 # Copy built C++ library
 COPY --from=cpp_builder /build/cpp_core/build/talentmatch.so /app/cpp_core/build/
 
