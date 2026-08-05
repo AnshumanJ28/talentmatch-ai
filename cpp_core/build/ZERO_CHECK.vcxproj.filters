@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\CMakeFiles\2ecaee48e93dbe0555f9973ad57a973f\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{046A04D0-FC70-3AEB-9886-11A09428DCD1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

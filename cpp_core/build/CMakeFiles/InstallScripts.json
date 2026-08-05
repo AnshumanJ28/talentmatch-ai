@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/anshu/Downloads/talentmatch-ai-main/cpp_core/build/cmake_install.cmake",
+		"C:/Users/anshu/Downloads/talentmatch-ai-main/cpp_core/build/_deps/nlohmann_json-build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

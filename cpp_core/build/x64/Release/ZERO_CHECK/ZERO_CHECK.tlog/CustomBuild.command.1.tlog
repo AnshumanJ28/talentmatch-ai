@@ -1,0 +1,10 @@
+^C:\USERS\ANSHU\DOWNLOADS\TALENTMATCH-AI-MAIN\CPP_CORE\BUILD\CMAKEFILES\2ECAEE48E93DBE0555F9973AD57A973F\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/anshu/Downloads/talentmatch-ai-main/cpp_core -BC:/Users/anshu/Downloads/talentmatch-ai-main/cpp_core/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/anshu/Downloads/talentmatch-ai-main/cpp_core/build/talentmatch_core.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

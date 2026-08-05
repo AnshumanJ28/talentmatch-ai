@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\CMakeFiles\3c70d3a4f7eb2b542157dec5b7bad875\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{046A04D0-FC70-3AEB-9886-11A09428DCD1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

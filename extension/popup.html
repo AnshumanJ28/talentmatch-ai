@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TalentMatch AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>TalentMatch <span class="accent-text">AI</span></h1>
+    </header>
+
+    <main class="main-content">
+      <div id="profileSection" class="profile-section">
+        <div class="profile-status">
+          <span id="profileStatusIcon">❌</span>
+          <span id="profileStatusText">No resume saved</span>
+        </div>
+        <div class="profile-actions">
+          <button type="button" id="saveProfileBtn" class="btn-small">Save Page as Resume</button>
+          <button type="button" id="clearProfileBtn" class="btn-small" style="display: none;">Clear</button>
+        </div>
+      </div>
+
+      <section id="inputSection">
+        <form id="scoreForm">
+          <div class="form-group" id="fileUploadGroup">
+            <label for="resumeUpload">Resume (PDF)</label>
+            <input type="file" id="resumeUpload" name="pdf_file" accept=".pdf" />
+            <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+              <input type="checkbox" id="rememberResume" checked />
+              <label for="rememberResume" style="font-size: 0.8rem; font-weight: normal; margin-bottom: 0;">Remember this resume for future jobs</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="jobDescription">Job Description</label>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+              <small style="color: var(--text-secondary);">We tried to auto-extract this for you!</small>
+              <button type="button" id="autoExtractBtn" class="btn-small">Extract Again</button>
+            </div>
+            <textarea id="jobDescription" name="job_description" placeholder="Paste the job description here..." maxlength="1500" required></textarea>
+            <div class="input-hint">
+              <span id="charCount">0 / 1500</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="submitBtn">
+            <span class="btn-text">Analyze Match</span>
+          </button>
+        </form>
+      </section>
+
+      <section id="resultsSection" style="display: none;">
+        <h2>Results</h2>
+        
+        <div class="score-container">
+          <div class="score-circle">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle" id="scoreCirclePath" stroke-dasharray="0, 100"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <text x="18" y="20.35" class="percentage" id="scoreValue">0%</text>
+            </svg>
+          </div>
+          <div class="score-label">ATS Score</div>
+        </div>
+
+        <button class="btn-primary" id="visitWebsiteBtn" style="margin-bottom: 0.5rem;">View Full Report on Website</button>
+        <button class="btn-secondary" id="resetBtn">Analyze Another</button>
+      </section>
+    </main>
+  </div>
+  
+  <div id="toast" class="toast"></div>
+
+  <script src="./popup.js"></script>
+</body>
+</html>

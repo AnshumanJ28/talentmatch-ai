@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\96b52f152280bfd15dc384007ff27858\nlohmann_json-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\96b52f152280bfd15dc384007ff27858\nlohmann_json-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\96b52f152280bfd15dc384007ff27858\nlohmann_json-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\96b52f152280bfd15dc384007ff27858\nlohmann_json-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\96b52f152280bfd15dc384007ff27858\nlohmann_json-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\96b52f152280bfd15dc384007ff27858\nlohmann_json-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\96b52f152280bfd15dc384007ff27858\nlohmann_json-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\96b52f152280bfd15dc384007ff27858\nlohmann_json-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\5b74617b0a95f05ed370518cf066187a\nlohmann_json-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\8fae2f4d2d2936cdb2487463ba17f5e8\nlohmann_json-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\anshu\Downloads\talentmatch-ai-main\cpp_core\build\_deps\nlohmann_json-subbuild\CMakeFiles\nlohmann_json-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E613588F-C70E-3F8A-A8F5-00EC9D872DD9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
