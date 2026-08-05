@@ -15,7 +15,7 @@ themeToggleBtn.addEventListener('click', () => {
 // API Configuration
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '' || window.location.protocol === 'file:'
   ? 'http://localhost:8000/api/score'
-  : 'https://talentmatch-ai-jwqd.onrender.com/api/score'; // Change for production
+  : 'https://talentmatch-ai-backend-lsc2.onrender.com/api/score'; // Change for production
 
 // Elements
 const scoreForm = document.getElementById('scoreForm');
