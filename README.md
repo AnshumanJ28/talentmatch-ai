@@ -10,6 +10,8 @@
 
 🌐 **Live Demo:** [talentmatch-ai-o22y.vercel.app](https://talentmatch-ai-o22y.vercel.app/)
 
+**to activate backend:** [https://talentmatch-ai-backend-lsc2.onrender.com](https://talentmatch-ai-backend-lsc2.onrender.com/)
+
 ---
 
 ## Table of Contents
