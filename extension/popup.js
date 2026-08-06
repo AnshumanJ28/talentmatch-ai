@@ -182,6 +182,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     inputSection.style.display = 'none';
     resultsSection.style.display = 'block';
+
+    const extRedFlagsContainer = document.getElementById('extRedFlagsContainer');
+    const extRedFlagsList = document.getElementById('extRedFlagsList');
+    const flags = [];
+    if (data.feature_vector) {
+      if (data.feature_vector.job_hopper_flag > 0.5) flags.push("Job-Hopping Detected (3+ short tenures)");
+      if (data.feature_vector.keyword_stuffing_penalty > 0.5) flags.push("Keyword Stuffing Detected (Extremely high skill density)");
+      if (data.feature_vector.overqualified_flag > 0.5) flags.push("Over-Qualification Risk (Seniority exceeds role requirements)");
+    }
+    if (flags.length > 0 && extRedFlagsContainer) {
+      extRedFlagsList.innerHTML = flags.map(f => `<li>${f}</li>`).join('');
+      extRedFlagsContainer.style.display = 'block';
+    } else if (extRedFlagsContainer) {
+      extRedFlagsContainer.style.display = 'none';
+    }
     
     setTimeout(() => {
       scoreCirclePath.setAttribute('stroke-dasharray', `${percentage}, 100`);

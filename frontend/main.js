@@ -275,6 +275,22 @@ function showResults(data) {
     if(matchSummaryContainer) matchSummaryContainer.style.display = 'none';
   }
 
+  // --- ATS Red Flags ---
+  const redFlagsContainer = document.getElementById('redFlagsContainer');
+  const redFlagsList = document.getElementById('redFlagsList');
+  const flags = [];
+  if (data.feature_vector) {
+    if (data.feature_vector.job_hopper_flag > 0.5) flags.push("Job-Hopping Detected (3+ short tenures)");
+    if (data.feature_vector.keyword_stuffing_penalty > 0.5) flags.push("Keyword Stuffing Detected (Extremely high skill density)");
+    if (data.feature_vector.overqualified_flag > 0.5) flags.push("Over-Qualification Risk (Seniority exceeds role requirements)");
+  }
+  if (flags.length > 0 && redFlagsContainer) {
+    redFlagsList.innerHTML = flags.map(f => `<li>${f}</li>`).join('');
+    redFlagsContainer.style.display = 'block';
+  } else if (redFlagsContainer) {
+    redFlagsContainer.style.display = 'none';
+  }
+
   // --- AI Suggestions ---
   const suggestionsContainer = document.getElementById('suggestionsContainer');
   const suggestionsList = document.getElementById('suggestionsList');
@@ -342,6 +358,9 @@ resetBtn.addEventListener('click', () => {
 
   const matchSummaryContainer = document.getElementById('matchSummaryContainer');
   if (matchSummaryContainer) matchSummaryContainer.style.display = 'none';
+
+  const redFlagsContainer = document.getElementById('redFlagsContainer');
+  if (redFlagsContainer) redFlagsContainer.style.display = 'none';
 
   const suggestionsContainer = document.getElementById('suggestionsContainer');
   if (suggestionsContainer) suggestionsContainer.style.display = 'none';

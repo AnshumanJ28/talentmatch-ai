@@ -377,18 +377,36 @@ void ResumeQualityExtractor::extract(const Resume& resume, FeatureVector& fv) {
                      !resume.contact.github_url.empty() ||
                      !resume.contact.portfolio_url.empty();
 
+    // Flesch-Kincaid Readability Approximation
+    int syllables = 0;
+    int sentences = std::max(1, static_cast<int>(resume.experience.size()));
+    for (char c : resume.raw_text) {
+        c = std::tolower(static_cast<unsigned char>(c));
+        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y') {
+            syllables++;
+        }
+        if (c == '.' || c == '!' || c == '?') sentences++;
+    }
+    double fk_score = 206.835 - 1.015 * (static_cast<double>(word_count) / sentences) - 84.6 * (static_cast<double>(syllables) / std::max(1, word_count));
+    // Normalize FK score (0 to 100 normally, map to 0.0-1.0)
+    double readability_score = std::max(0.0, std::min(1.0, fk_score / 100.0));
+
+    // Keyword Stuffing Penalty
+    double skill_density = static_cast<double>(resume.raw_skills.size()) / std::max(1, word_count);
+    double keyword_stuffing_penalty = (skill_density > 0.25) ? 1.0 : 0.0;
+
     fv.set("section_completeness_score",  section_completeness(resume));
     fv.set("action_verb_density_global",  av_density_global);
     fv.set("quantified_achievements_total", std::min(1.0, static_cast<double>(quant_total) / 20.0));
     fv.set("avg_bullet_length",           std::min(1.0, bullet_len / 150.0));
-    fv.set("total_word_count",            std::min(1.0, static_cast<double>(word_count) / 800.0));
+    fv.set("total_word_count",            std::min(1.0, static_cast<double>(word_count) / 2000.0));
     fv.set("resume_length_score",
-           // Penalize very short (<300) or very long (>1200) resumes
+           // Penalize very short (<300) or very long (>2500) resumes
            [&]() -> double {
                if (word_count < 100) return 0.2;
                if (word_count < 300) return 0.5;
-               if (word_count <= 900) return 1.0;
-               if (word_count <= 1200) return 0.8;
+               if (word_count <= 2000) return 1.0;
+               if (word_count <= 2500) return 0.8;
                return 0.6;
            }());
     fv.set("formatting_consistency",      formatting_consistency(resume));
@@ -396,6 +414,8 @@ void ResumeQualityExtractor::extract(const Resume& resume, FeatureVector& fv) {
     fv.set("has_links",                   has_links ? 1.0 : 0.0);
     fv.set("has_contact_info",
            (!resume.contact.email.empty() || !resume.contact.phone.empty()) ? 1.0 : 0.0);
+    fv.set("readability_score",           readability_score);
+    fv.set("keyword_stuffing_penalty",    keyword_stuffing_penalty);
 }
 
 } // namespace talentmatch
