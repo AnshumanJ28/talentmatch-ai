@@ -33,6 +33,8 @@
 
 > [!NOTE]
 > v2 replaces the Groq/LLM-based pipeline with a **deterministic C++ ML engine**. All scoring intelligence runs natively in C++. Python is responsible only for PDF text extraction and embedding generation.
+> 
+> *Optional*: If a `GROQ_API_KEY` is provided in the environment, the pipeline will query Groq at the very end to generate an **AI Match Summary** and actionable **Rewrite Suggestions** based on the C++ engine's findings.
 
 ---
 

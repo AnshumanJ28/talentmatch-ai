@@ -14,3 +14,5 @@ pandas
 gradio
 aiofiles
 
+groq
+tenacity

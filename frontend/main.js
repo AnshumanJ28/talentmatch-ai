@@ -265,6 +265,38 @@ function showResults(data) {
     skillsContainer.style.display = 'none';
   }
 
+  // --- AI Match Summary ---
+  const matchSummaryContainer = document.getElementById('matchSummaryContainer');
+  const matchSummaryText = document.getElementById('matchSummaryText');
+  if (data.match_summary) {
+    matchSummaryText.textContent = data.match_summary;
+    if(matchSummaryContainer) matchSummaryContainer.style.display = 'block';
+  } else {
+    if(matchSummaryContainer) matchSummaryContainer.style.display = 'none';
+  }
+
+  // --- AI Suggestions ---
+  const suggestionsContainer = document.getElementById('suggestionsContainer');
+  const suggestionsList = document.getElementById('suggestionsList');
+
+  if (data.suggestions && data.suggestions.length > 0) {
+    suggestionsList.innerHTML = data.suggestions.map(s => {
+      const priorityClass = `priority-${s.priority || 'medium'}`;
+      const priorityLabel = (s.priority || 'medium').toUpperCase();
+      return `
+        <div class="suggestion-card">
+          <div class="suggestion-card-top">
+            <span class="suggestion-issue">⚠ ${s.issue}</span>
+            <span class="suggestion-priority ${priorityClass}">${priorityLabel}</span>
+          </div>
+          <p class="suggestion-text">✨ ${s.suggestion}</p>
+        </div>`;
+    }).join('');
+    if(suggestionsContainer) suggestionsContainer.style.display = 'block';
+  } else {
+    if(suggestionsContainer) suggestionsContainer.style.display = 'none';
+  }
+
   // Format Developer Details as a Table
   const explanationContent = document.getElementById('explanationContent');
   if (data.feature_vector) {
@@ -307,6 +339,12 @@ resetBtn.addEventListener('click', () => {
   if (semanticCirclePath) {
     semanticCirclePath.setAttribute('stroke-dasharray', '0, 100');
   }
+
+  const matchSummaryContainer = document.getElementById('matchSummaryContainer');
+  if (matchSummaryContainer) matchSummaryContainer.style.display = 'none';
+
+  const suggestionsContainer = document.getElementById('suggestionsContainer');
+  if (suggestionsContainer) suggestionsContainer.style.display = 'none';
 });
 
 // Utilities

@@ -122,6 +122,13 @@
             </div>
           </div>
 
+          <div id="matchSummaryContainer" class="match-summary-container" style="display: none; padding: 1rem; background: rgba(139, 92, 246, 0.05); border-left: 3px solid var(--accent-color); border-radius: 8px; margin-bottom: 1.5rem;">
+            <h4 style="margin-top:0; color: var(--accent-color); font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🤖</span> AI Match Analysis
+            </h4>
+            <p id="matchSummaryText" style="font-size: 0.9rem; line-height: 1.5; color: var(--text-primary); margin-bottom:0;"></p>
+          </div>
+
           <div id="candidateProfile" class="candidate-profile" style="display: none;">
             <h3>Candidate Highlights</h3>
             <div class="profile-card">
@@ -176,6 +183,16 @@
                  <div id="missingSkills" class="skill-tags"></div>
                </div>
              </div>
+          </div>
+
+          <!-- AI Suggestions Section -->
+          <div id="suggestionsContainer" class="suggestions-container" style="display: none;">
+            <div class="suggestions-header">
+              <span class="suggestions-icon">✨</span>
+              <h3>AI Resume Coach</h3>
+              <span class="suggestions-badge">Powered by Groq</span>
+            </div>
+            <div id="suggestionsList" class="suggestions-list"></div>
           </div>
 
           <details class="dev-details">
