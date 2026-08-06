@@ -582,6 +582,6 @@ Star this repo if you found it interesting!
 
 ---
 
-*Made by [Anshuman](https://github.com/AnshumanJ28) and [Arnav](https://github.com/)*
+*Made by [Anshuman](https://github.com/AnshumanJ28) and [Arnav](https://github.com/Arnavshukla09)*
 
 </div>
