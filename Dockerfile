@@ -59,6 +59,7 @@ RUN python -c "from sentence_transformers import SentenceTransformer; \
 COPY src/ ./src/
 COPY api.py .
 COPY models/ ./models/
+COPY frontend/ ./frontend/
 
 ENV DATA_DIR=/app/data
 ENV TALENTMATCH_LIB_PATH=/app/cpp_core/build/talentmatch.so
@@ -66,4 +67,4 @@ ENV TALENTMATCH_LIB_PATH=/app/cpp_core/build/talentmatch.so
 RUN mkdir -p /app/data
 
 EXPOSE 8000
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD uvicorn api:app --host 0.0.0.0 --port ${PORT:-8000}

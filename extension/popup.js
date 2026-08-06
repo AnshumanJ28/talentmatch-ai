@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const visitWebsiteBtn = document.getElementById('visitWebsiteBtn');
   if (visitWebsiteBtn) {
     visitWebsiteBtn.addEventListener('click', () => {
-      chrome.tabs.create({ url: 'https://talentmatch-ai-orpin.vercel.app/' });
+      chrome.tabs.create({ url: 'https://talentmatch-ai-jwqd.onrender.com/' });
     });
   }
 

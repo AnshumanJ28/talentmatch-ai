@@ -12,10 +12,8 @@ themeToggleBtn.addEventListener('click', () => {
   applyTheme(current === 'light' ? 'dark' : 'light');
 });
 
-// API Configuration
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '' || window.location.protocol === 'file:'
-  ? 'http://localhost:8000/api/score'
-  : 'https://talentmatch-ai-backend-lsc2.onrender.com/api/score'; // Change for production
+// API Configuration — relative path works on localhost AND Render
+const API_URL = '/api/score';
 
 // Elements
 const scoreForm = document.getElementById('scoreForm');

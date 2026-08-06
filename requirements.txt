@@ -12,3 +12,5 @@ python-dotenv
 numpy
 pandas
 gradio
+aiofiles
+
