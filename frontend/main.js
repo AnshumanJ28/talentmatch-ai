@@ -74,7 +74,7 @@ const charCountDisplay = document.getElementById('charCount');
 
 jobDescriptionInput.addEventListener('input', (e) => {
   const currentLength = e.target.value.length;
-  charCountDisplay.textContent = `${currentLength} / 1500`;
+  charCountDisplay.textContent = `${currentLength} / 15000`;
 });
 
 const loadingTexts = [
@@ -106,8 +106,9 @@ scoreForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  if (jdText.length > 1500) {
-    showToast("Job Description is too long. Max 1500 characters.");
+  // Client-side length validation
+  if (jdText.length > 15000) {
+    showToast("Job Description is too long. Max 15000 characters.");
     return;
   }
 
@@ -346,7 +347,7 @@ function showResults(data) {
 resetBtn.addEventListener('click', () => {
   scoreForm.reset();
   fileNameDisplay.textContent = '';
-  charCountDisplay.textContent = '0 / 1500';
+  charCountDisplay.textContent = '0 / 15000';
   resultsSection.style.display = 'none';
   inputSection.style.display = 'block';
   scoreCirclePath.setAttribute('stroke-dasharray', '0, 100');

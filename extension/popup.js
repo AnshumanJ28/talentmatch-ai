@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   autoExtractBtn.addEventListener('click', autoExtractJD);
 
   jobDescriptionInput.addEventListener('input', (e) => {
-    charCountDisplay.textContent = `${e.target.value.length} / 1500`;
+    charCountDisplay.textContent = `${e.target.value.length} / 15000`;
   });
 
   scoreForm.addEventListener('submit', async (e) => {
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       formData.append('pdf_file', file);
     }
-    formData.append('job_description', jdText.substring(0, 1500)); // enforce limit
+    formData.append('job_description', jdText.substring(0, 15000)); // enforce limit
 
     try {
       const response = await fetch(API_URL, {
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resultsSection.style.display = 'none';
     inputSection.style.display = 'block';
     scoreCirclePath.setAttribute('stroke-dasharray', '0, 100');
-    charCountDisplay.textContent = '0 / 1500';
+    charCountDisplay.textContent = '0 / 15000';
     autoExtractJD(); // Try to get text again
   });
 
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (text.length > 50) { // arbitrary minimum
              const smartText = smartExtractJD(text);
              jobDescriptionInput.value = smartText;
-             charCountDisplay.textContent = `${smartText.length} / 1500`;
+             charCountDisplay.textContent = `${smartText.length} / 15000`;
           }
         }
       });
@@ -345,9 +345,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Helper to find the most relevant 1500 characters of a JD
+  // Helper to find the most relevant 15000 characters of a JD
   function smartExtractJD(text) {
-    if (text.length <= 1500) return text;
+    if (text.length <= 15000) return text;
     
     const lowerText = text.toLowerCase();
     const keywords = [
@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (bestIndex !== -1) {
       // Start slightly before the keyword to capture the section header
       let start = Math.max(0, bestIndex - 50); 
-      let extracted = text.substring(start, start + 1500);
+      let extracted = text.substring(start, start + 15000);
       
       // Clean up broken words at the end
       let lastSpace = extracted.lastIndexOf(' ');
@@ -378,6 +378,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return extracted.trim();
     }
     
-    return text.substring(0, 1500);
+    return text.substring(0, 15000);
   }
 });
