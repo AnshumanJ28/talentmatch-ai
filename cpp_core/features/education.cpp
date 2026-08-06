@@ -6,6 +6,7 @@
 #include <cmath>
 #include <unordered_set>
 #include <numeric>
+#include <iterator>
 
 namespace talentmatch {
 

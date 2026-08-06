@@ -12,7 +12,7 @@
  * ============================================================================ */
 
 #ifdef _WIN32
-#  ifdef TALENTMATCH_EXPORTS
+#  if defined(TALENTMATCH_EXPORTS) || defined(talentmatch_EXPORTS)
 #    define TM_API __declspec(dllexport)
 #  else
 #    define TM_API __declspec(dllimport)

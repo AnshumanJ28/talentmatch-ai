@@ -20,6 +20,7 @@ if(MSVC)
     add_definitions(-DTALENTMATCH_EXPORTS -D_CRT_SECURE_NO_WARNINGS -DNOMINMAX)
 else()
     add_compile_options(-Wall -Wextra -O3 -fPIC -fvisibility=hidden)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static -static-libstdc++ -static-libgcc")
 endif()
 
 # ============================================================================
