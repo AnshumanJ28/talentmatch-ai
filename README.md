@@ -25,11 +25,10 @@
 </div>
 
 > [!CAUTION]
-> **Before using the live demo**, the backend must be woken up first (Render free tier spins down after inactivity).
-> Visit the backend health endpoint to activate it, then use the demo:
+> **Before using the live demo**, note that the backend must be woken up first (Render free tier spins down after inactivity).
+> The system might take up to 90 seconds to analyze your first resume while the servers boot up.
 >
-> 1. **Activate backend →** [talentmatch-ai-backend-lsc2.onrender.com](https://talentmatch-ai-backend-lsc2.onrender.com/) *(wait for a response)*
-> 2. **Then use the demo →** [talentmatch-ai-jwqd.onrender.com](https://talentmatch-ai-jwqd.onrender.com/)
+> [**Go to Live Demo →**](https://talentmatch-ai-jwqd.onrender.com/)
 
 > [!NOTE]
 > v2 replaces the Groq/LLM-based pipeline with a **deterministic C++ ML engine**. All scoring intelligence runs natively in C++. Python is responsible only for PDF text extraction and embedding generation.
