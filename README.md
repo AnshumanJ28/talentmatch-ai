@@ -558,7 +558,7 @@ talentmatch-ai-main/
 | Contributor | Responsibilities |
 |:---|:---|
 | **Anshuman Pandey** | ML pipeline, C++ engine architecture, v2 refactor |
-| **Arnav Shukla** | Hosting, deployment, live demo, Chrome extension |
+| **Arnav Shukla** | Hosting, deployment, live demo, Edge extension |
 
 ---
 
