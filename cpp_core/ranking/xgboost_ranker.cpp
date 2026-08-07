@@ -41,6 +41,10 @@ CategoryScores CategoryScoreComputer::compute(const FeatureVector& fv) {
         0.05 * fv.get("employment_gap_months")
     );
 
+    // Penalties
+    if (fv.get("job_hopper_flag") > 0.5) s.experience -= 10.0;
+    if (fv.get("overqualified_flag") > 0.5) s.experience -= 10.0;
+
     // EDUCATION (0-100)
     s.education = 100.0 * (
         0.35 * fv.get("highest_degree_level") +
@@ -71,14 +75,18 @@ CategoryScores CategoryScoreComputer::compute(const FeatureVector& fv) {
 
     // RESUME QUALITY (0-100)
     s.resume_quality = 100.0 * (
-        0.25 * fv.get("section_completeness_score") +
+        0.20 * fv.get("section_completeness_score") +
         0.20 * fv.get("action_verb_density_global") +
-        0.20 * fv.get("quantified_achievements_total") +
+        0.15 * fv.get("quantified_achievements_total") +
         0.15 * fv.get("resume_length_score") +
+        0.10 * fv.get("readability_score") + 
         0.10 * fv.get("has_summary") +
         0.05 * fv.get("has_links") +
         0.05 * fv.get("has_contact_info")
     );
+
+    // Severe penalty for keyword stuffing
+    if (fv.get("keyword_stuffing_penalty") > 0.5) s.resume_quality -= 30.0;
 
     // Clamp all to [0, 100]
     auto clamp100 = [](double v){ return std::max(0.0, std::min(100.0, v)); };

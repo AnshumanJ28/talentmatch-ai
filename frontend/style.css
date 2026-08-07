@@ -716,3 +716,123 @@ textarea:focus {
 .dev-table tr:hover {
   background: var(--overlay-medium);
 }
+/* --- AI Suggestions Section ---------------------------------------------- */
+
+.suggestions-container {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  backdrop-filter: blur(12px);
+  animation: fadeSlideUp 0.4s ease both;
+}
+
+.suggestions-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.suggestions-icon {
+  font-size: 1.3rem;
+}
+
+.suggestions-header h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.suggestions-badge {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  background: var(--accent-glow);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+  letter-spacing: 0.02em;
+}
+
+.suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.suggestion-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.suggestion-card:hover {
+  transform: translateX(3px);
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.suggestion-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.55rem;
+}
+
+.suggestion-issue {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.suggestion-priority {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.priority-high {
+  background: var(--danger-bg);
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+
+.priority-medium {
+  background: var(--accent-glow);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.priority-low {
+  background: var(--success-bg);
+  color: var(--success-color);
+  border: 1px solid var(--success-color);
+}
+
+.suggestion-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.55;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+[data-theme="light"] .suggestion-card {
+  background: rgba(128, 0, 32, 0.03);
+  border-left-color: var(--accent-blue);
+}

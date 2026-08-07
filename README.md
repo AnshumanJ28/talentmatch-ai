@@ -4,7 +4,7 @@
 
 **Production-grade Resume Ranking Engine — No LLM, No API Key**
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-FF6B6B?style=for-the-badge)](https://talentmatch-ai-o22y.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Render-FF6B6B?style=for-the-badge)](https://talentmatch-ai-jwqd.onrender.com/)
 [![No API Key](https://img.shields.io/badge/API_Key-Not_Required-3fb950?style=for-the-badge)](.)
 [![Engine](https://img.shields.io/badge/Scoring_Engine-C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)](cpp_core/)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
@@ -18,21 +18,22 @@
 
 <br/>
 
-[**Try the Demo →**](https://talentmatch-ai-o22y.vercel.app/) · [Architecture](#architecture) · [C++ Engine](#c-engine-core) · [Get Started](#getting-started)
+[**Try the Demo →**](https://talentmatch-ai-jwqd.onrender.com/) · [Architecture](#architecture) · [C++ Engine](#c-engine-core) · [Get Started](#getting-started)
 
 ---
 
 </div>
 
 > [!CAUTION]
-> **Before using the live demo**, the backend must be woken up first (Render free tier spins down after inactivity).
-> Visit the backend health endpoint to activate it, then use the demo:
+> **Before using the live demo**, note that the backend must be woken up first (Render free tier spins down after inactivity).
+> The system might take up to 90 seconds to analyze your first resume while the servers boot up.
 >
-> 1. **Activate backend →** [talentmatch-ai-backend-lsc2.onrender.com](https://talentmatch-ai-backend-lsc2.onrender.com/) *(wait for a response)*
-> 2. **Then use the demo →** [talentmatch-ai-o22y.vercel.app](https://talentmatch-ai-o22y.vercel.app/)
+> [**Go to Live Demo →**](https://talentmatch-ai-jwqd.onrender.com/)
 
 > [!NOTE]
 > v2 replaces the Groq/LLM-based pipeline with a **deterministic C++ ML engine**. All scoring intelligence runs natively in C++. Python is responsible only for PDF text extraction and embedding generation.
+> 
+> *Optional*: If a `GROQ_API_KEY` is provided in the environment, the pipeline will query Groq at the very end to generate an **AI Match Summary** and actionable **Rewrite Suggestions** based on the C++ engine's findings.
 
 ---
 

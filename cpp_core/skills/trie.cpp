@@ -12,7 +12,7 @@ std::string AhoCorasickTrie::normalize(const std::string& s) {
     r.reserve(s.size());
     for (unsigned char c : s) {
         if (std::isalpha(c))  r += static_cast<char>(std::tolower(c));
-        else if (std::isdigit(c) || c == '+' || c == '#' || c == '.') r += static_cast<char>(c);
+        else if (std::isdigit(c) || c == '+' || c == '#' || c == '.' || c == '&' || c == '-') r += static_cast<char>(c);
         else r += ' ';
     }
     // Collapse spaces
@@ -128,11 +128,14 @@ std::vector<TrieMatch> AhoCorasickTrie::scan(const std::string& raw_text) const 
             size_t start = end - static_cast<size_t>(nodes_[cur].pattern_len);
 
             // Word boundary check: character before start and after end must not be
-            // alphanumeric (to avoid "java" matching inside "javascript")
-            bool left_ok  = (start == 0) ||
-                            !std::isalnum(static_cast<unsigned char>(text[start - 1]));
-            bool right_ok = (end >= text.size()) ||
-                            !std::isalnum(static_cast<unsigned char>(text[end]));
+            // a valid word character. We consider alnum and special symbols (+ # . & -) as word chars
+            // to avoid "C" matching inside "C++", "C#", "C-level", or "R&D".
+            auto is_word_char = [](unsigned char ch) {
+                return std::isalnum(ch) || ch == '+' || ch == '#' || ch == '.' || ch == '&' || ch == '-';
+            };
+            
+            bool left_ok  = (start == 0) || !is_word_char(static_cast<unsigned char>(text[start - 1]));
+            bool right_ok = (end >= text.size()) || !is_word_char(static_cast<unsigned char>(text[end]));
 
             if (left_ok && right_ok) {
                 raw_matches.push_back({

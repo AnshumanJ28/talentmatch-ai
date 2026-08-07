@@ -12,10 +12,8 @@ themeToggleBtn.addEventListener('click', () => {
   applyTheme(current === 'light' ? 'dark' : 'light');
 });
 
-// API Configuration
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '' || window.location.protocol === 'file:'
-  ? 'http://localhost:8000/api/score'
-  : 'https://talentmatch-ai-backend-lsc2.onrender.com/api/score'; // Change for production
+// API Configuration — relative path works on localhost AND Render
+const API_URL = '/api/score';
 
 // Elements
 const scoreForm = document.getElementById('scoreForm');
@@ -76,7 +74,7 @@ const charCountDisplay = document.getElementById('charCount');
 
 jobDescriptionInput.addEventListener('input', (e) => {
   const currentLength = e.target.value.length;
-  charCountDisplay.textContent = `${currentLength} / 1500`;
+  charCountDisplay.textContent = `${currentLength} / 15000`;
 });
 
 const loadingTexts = [
@@ -108,8 +106,9 @@ scoreForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  if (jdText.length > 1500) {
-    showToast("Job Description is too long. Max 1500 characters.");
+  // Client-side length validation
+  if (jdText.length > 15000) {
+    showToast("Job Description is too long. Max 15000 characters.");
     return;
   }
 
@@ -267,6 +266,54 @@ function showResults(data) {
     skillsContainer.style.display = 'none';
   }
 
+  // --- AI Match Summary ---
+  const matchSummaryContainer = document.getElementById('matchSummaryContainer');
+  const matchSummaryText = document.getElementById('matchSummaryText');
+  if (data.match_summary) {
+    matchSummaryText.textContent = data.match_summary;
+    if(matchSummaryContainer) matchSummaryContainer.style.display = 'block';
+  } else {
+    if(matchSummaryContainer) matchSummaryContainer.style.display = 'none';
+  }
+
+  // --- ATS Red Flags ---
+  const redFlagsContainer = document.getElementById('redFlagsContainer');
+  const redFlagsList = document.getElementById('redFlagsList');
+  const flags = [];
+  if (data.feature_vector) {
+    if (data.feature_vector.job_hopper_flag > 0.5) flags.push("Job-Hopping Detected (3+ short tenures)");
+    if (data.feature_vector.keyword_stuffing_penalty > 0.5) flags.push("Keyword Stuffing Detected (Extremely high skill density)");
+    if (data.feature_vector.overqualified_flag > 0.5) flags.push("Over-Qualification Risk (Seniority exceeds role requirements)");
+  }
+  if (flags.length > 0 && redFlagsContainer) {
+    redFlagsList.innerHTML = flags.map(f => `<li>${f}</li>`).join('');
+    redFlagsContainer.style.display = 'block';
+  } else if (redFlagsContainer) {
+    redFlagsContainer.style.display = 'none';
+  }
+
+  // --- AI Suggestions ---
+  const suggestionsContainer = document.getElementById('suggestionsContainer');
+  const suggestionsList = document.getElementById('suggestionsList');
+
+  if (data.suggestions && data.suggestions.length > 0) {
+    suggestionsList.innerHTML = data.suggestions.map(s => {
+      const priorityClass = `priority-${s.priority || 'medium'}`;
+      const priorityLabel = (s.priority || 'medium').toUpperCase();
+      return `
+        <div class="suggestion-card">
+          <div class="suggestion-card-top">
+            <span class="suggestion-issue">⚠ ${s.issue}</span>
+            <span class="suggestion-priority ${priorityClass}">${priorityLabel}</span>
+          </div>
+          <p class="suggestion-text">✨ ${s.suggestion}</p>
+        </div>`;
+    }).join('');
+    if(suggestionsContainer) suggestionsContainer.style.display = 'block';
+  } else {
+    if(suggestionsContainer) suggestionsContainer.style.display = 'none';
+  }
+
   // Format Developer Details as a Table
   const explanationContent = document.getElementById('explanationContent');
   if (data.feature_vector) {
@@ -300,7 +347,7 @@ function showResults(data) {
 resetBtn.addEventListener('click', () => {
   scoreForm.reset();
   fileNameDisplay.textContent = '';
-  charCountDisplay.textContent = '0 / 1500';
+  charCountDisplay.textContent = '0 / 15000';
   resultsSection.style.display = 'none';
   inputSection.style.display = 'block';
   scoreCirclePath.setAttribute('stroke-dasharray', '0, 100');
@@ -309,6 +356,15 @@ resetBtn.addEventListener('click', () => {
   if (semanticCirclePath) {
     semanticCirclePath.setAttribute('stroke-dasharray', '0, 100');
   }
+
+  const matchSummaryContainer = document.getElementById('matchSummaryContainer');
+  if (matchSummaryContainer) matchSummaryContainer.style.display = 'none';
+
+  const redFlagsContainer = document.getElementById('redFlagsContainer');
+  if (redFlagsContainer) redFlagsContainer.style.display = 'none';
+
+  const suggestionsContainer = document.getElementById('suggestionsContainer');
+  if (suggestionsContainer) suggestionsContainer.style.display = 'none';
 });
 
 // Utilities

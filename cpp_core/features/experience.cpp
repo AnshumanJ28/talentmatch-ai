@@ -193,14 +193,19 @@ void ExperienceFeatureExtractor::extract(const Resume& resume,
     double max_months   = 0.0;
     bool   is_current   = false;
 
+    int short_tenure_count = 0;
     for (const auto& e : exp) {
         double dur = months_between(e.start_date, e.end_date);
         durations.push_back(dur);
         total_months += dur;
         max_months = std::max(max_months, dur);
         if (e.is_current) is_current = true;
+        if (dur > 0 && dur < 12.0) {
+            short_tenure_count++;
+        }
     }
     double avg_tenure = total_months / static_cast<double>(exp.size());
+    double job_hopper_flag = (short_tenure_count >= 3) ? 1.0 : 0.0;
 
     // Employment gaps: sort entries by start date and find gaps
     double gap_months = 0.0;
@@ -259,6 +264,12 @@ void ExperienceFeatureExtractor::extract(const Resume& resume,
     // Relevant experience: approximate as total × seniority match
     double relevant_months = total_months * seniority_match;
 
+    // Over-qualification
+    double overqualified_flag = 0.0;
+    if (max_seniority > jd_seniority + 0.30 && total_months > 120.0) {
+        overqualified_flag = 1.0;
+    }
+
     // Normalize features to [0, 1]
     static const double MONTHS_CAP = 240.0; // 20 years
     fv.set("total_experience_months",   std::min(1.0, total_months / MONTHS_CAP));
@@ -276,6 +287,8 @@ void ExperienceFeatureExtractor::extract(const Resume& resume,
     fv.set("quantified_achievement_count", std::min(1.0, static_cast<double>(quant_count) / 10.0));
     fv.set("action_verb_density",       av_density);
     fv.set("career_progression_score",  career_progression(exp));
+    fv.set("job_hopper_flag",           job_hopper_flag);
+    fv.set("overqualified_flag",        overqualified_flag);
 }
 
 } // namespace talentmatch

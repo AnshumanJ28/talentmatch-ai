@@ -25,6 +25,14 @@ def utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def get_groq_api_key() -> str:
+    """Get Groq API key for AI suggestions."""
+    key = os.environ.get("GROQ_API_KEY", "")
+    if not key:
+        logging.getLogger("config").warning("GROQ_API_KEY environment variable not set.")
+    return key
+
+
 # ---------------------------------------------------------------------------
 # Directory layout
 # ---------------------------------------------------------------------------

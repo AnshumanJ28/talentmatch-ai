@@ -12,3 +12,7 @@ python-dotenv
 numpy
 pandas
 gradio
+aiofiles
+
+groq
+tenacity

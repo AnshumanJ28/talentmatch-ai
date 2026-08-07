@@ -95,6 +95,21 @@ class InferencePipeline:
             f"Matched skills: {len(result.get('matched_skills', []))}"
         )
 
+        import os
+        if os.environ.get("GROQ_API_KEY") or os.environ.get("MOCK_LLM") == "1":
+            try:
+                from src.suggestions.generator import generate_ai_insights
+                insights = generate_ai_insights(
+                    missing_skills=result.get("missing_skills", []),
+                    matched_skills=result.get("matched_skills", []),
+                    raw_resume_text=raw_text,
+                    job_description_text=job_description_text,
+                )
+                result["match_summary"] = insights.get("match_summary", "")
+                result["suggestions"] = insights.get("suggestions", [])
+            except Exception as e:
+                logger.warning(f"Failed to generate AI insights: {e}")
+        
         return result
 
     @staticmethod

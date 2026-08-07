@@ -17,7 +17,8 @@ load_dotenv()
 from typing import Optional
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 import shutil
 from pathlib import Path
 import os
@@ -126,6 +127,9 @@ async def score_resume(
             "feature_vector":       result.get("feature_vector", {}),
         })
 
+    except (ValueError, RuntimeError) as e:
+        # Treat PDF parsing failures or invalid inputs as a Bad Request
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
@@ -143,6 +147,36 @@ async def health():
         version = f"unavailable ({e})"
     return {"status": "ok", "engine_version": version, "api_version": "2.0.0"}
 
+# ── Serve built Vite frontend ─────────────────────────────────────────────────
+# Docker builds frontend/dist via the Node.js stage.
+# Falls back to raw frontend/ folder for local dev without a build.
+
+FRONTEND_DIST = Path("frontend/dist")
+FRONTEND_RAW  = Path("frontend")
+
+if FRONTEND_DIST.exists():
+    _serve_dir = FRONTEND_DIST
+elif FRONTEND_RAW.exists():
+    _serve_dir = FRONTEND_RAW
+else:
+    _serve_dir = None
+
+if _serve_dir:
+    # Mount static assets subfolder if it exists
+    _assets = _serve_dir / "assets"
+    if _assets.exists():
+        app.mount("/assets", StaticFiles(directory=str(_assets)), name="assets")
+
+    @app.get("/")
+    async def serve_index():
+        return FileResponse(_serve_dir / "index.html")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa(full_path: str):
+        file_path = _serve_dir / full_path
+        if file_path.is_file():
+            return FileResponse(str(file_path))
+        return FileResponse(_serve_dir / "index.html")
 
 if __name__ == "__main__":
     import uvicorn

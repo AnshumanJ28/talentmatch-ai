@@ -7,4 +7,4 @@ services:
     dockerCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: GROQ_API_KEY
-        sync: false # User must provide this in the Render dashboard
+        sync: false # User must provide this in the Render dashboard for AI Coaching
