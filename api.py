@@ -127,6 +127,9 @@ async def score_resume(
             "feature_vector":       result.get("feature_vector", {}),
         })
 
+    except (ValueError, RuntimeError) as e:
+        # Treat PDF parsing failures or invalid inputs as a Bad Request
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
